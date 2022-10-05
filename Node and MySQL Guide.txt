@@ -1,0 +1,29 @@
+Download Node: https://nodejs.org/en/download/
+
+Download MySQL: https://dev.mysql.com/downloads/installer/
+ - Make sure you select "Legacy Password" instead of the recommended password.
+
+Install this specific CSV reader: https://github.com/vanillaes/csv
+
+npm install mysql
+
+
+
+
+Put this code into a .mjs file and edit the password:
+
+var mysql = require('mysql');
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "[PUT YOUR PASSWORD HERE]"
+});
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+
+
+Test if it works:
+> node "[PUT YOUR FILE PATH HERE]"
+Connected!
