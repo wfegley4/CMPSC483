@@ -5,7 +5,9 @@ Download MySQL: https://dev.mysql.com/downloads/installer/
 
 Install this specific CSV reader: https://github.com/vanillaes/csv
 
+
 npm install mysql
+npm install sql-template-strings
 
 
 
