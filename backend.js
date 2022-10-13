@@ -284,3 +284,47 @@ function getAlternateProjects(studentID, callback) {
         callback();
     });
 }
+
+// Given a project, return all display information for that project.
+function getProjectData(projectID, callback) {
+    // Put the query in the ``.
+    const query = (SQL ``);
+    databaseConnection.query(query, function (err, result) {
+        if (err) throw err;
+        // Do something with the result.
+        callback();
+    });
+}
+
+// Given a student, return all display information for that student.
+function getStudentData(studentID, callback) {
+    // Put the query in the ``.
+    const query = (SQL ``);
+    databaseConnection.query(query, function (err, result) {
+        if (err) throw err;
+        // Do something with the result.
+        callback();
+    });
+}
+
+// Given a project, return all display information for all of it's students.
+function getStudentsInProject(projectID, callback) {
+    // Put the query in the ``.
+    const query = (SQL ``);
+    databaseConnection.query(query, function (err, result) {
+        if (err) throw err;
+        // Do something with the result.
+        callback();
+    });
+}
+
+// Given a student and a project, update the student’s entry in the assignments table to move them to that project.
+function updateAssignment(studentID, projectID, callback) {
+    // Put the query in the ``.
+    const query = (SQL ``);
+    databaseConnection.query(query, function (err, result) {
+        if (err) throw err;
+        // Do something with the result.
+        callback();
+    });
+}
