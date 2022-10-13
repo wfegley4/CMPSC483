@@ -11,6 +11,8 @@ const preferencesCSV = 'studentsFinal.csv';
 const projectsCSV = 'projectsFinal.csv';
 const studentsCSV = 'studentAssignments.csv';
 
+const majors = ['BME', 'CMPEN', 'CMPSC', 'DS', 'ED', 'EE', 'EGEE', 'ESC', 'IE', 'MATSE', 'ME'];
+
 let preferences;
 let projects;
 let students;
@@ -34,15 +36,19 @@ const databaseConnection = mySQL.createConnection({
 // Main code.
 databaseSetup(function() {
     readCSVs(function() {
-        addStudent('drs5972', 'Dan', 'Stebbins', 'CMPSC', 1, 1, 0, function() {});
-        addProject('XKCD', 'PSU', 'Test Project', 'CMPSC', 'EE', 'ME; CMPEN', 1, 0, '4 AM', 'CMPSC -2^10', 1, function() {});
-        addPreference('XKCD', 'drs5972', '8 AM', '10 AM', '4 AM', 2, 'Please no anything but this project I hate it.', function() {});
-        addAssignment('XKCD', 'drs5972', function() {})
+        // Test Data.
+        // addStudent('drs5972', 'Dan', 'Stebbins', 'CMPSC', 1, 1, 0, function() {});
+        // addProject('XKCD', 'PSU', 'Test Project', 'CMPSC', 'EE', 'ME; CMPEN', 1, 0, '4 AM', 'CMPSC -2^10', 1, function() {});
+        // addPreference('XKCD', 'drs5972', '8 AM', '10 AM', '4 AM', 2, 'Please no anything but this project I hate it.', function() {});
+        // addAssignment('XKCD', 'drs5972', function() {});
+        // console.log(students);
+        loadTables(function() {});
     });
 });
 
 
-// Database Setup.
+// ==================================== DATABASE SETUP ====================================
+
 function databaseSetup(callback) {
     connectToMySQL(function () {
         createDatabase(function () {
@@ -89,7 +95,8 @@ function dropDatabase(callback) {
 }
 
 
-// Table Creation.
+// ==================================== TABLE CREATION ====================================
+
 function createTables(callback) {
     createAssignmentsTable(function () {
         createPreferencesTable(function () {
@@ -166,7 +173,8 @@ function createStudentsTable(callback) {
 }
 
 
-// CSV Reading.
+// ==================================== CSV STUFF ====================================
+
 function readCSVs(callback) {
     readCSV(preferencesCSV, csv.parse({ delimiter: ',' }, function (err, data) { preferences = data.slice(1, data.length) }), function () {
         readCSV(projectsCSV, csv.parse({ delimiter: ',' }, function (err, data) { projects = data.slice(1, data.length) }), function () {
@@ -181,6 +189,65 @@ function readCSV(file, parser, callback) {
     fs.createReadStream(file).pipe(parser).on('error', function (err) { console.log(err) }).on('close', callback);
 }
 
+function loadTables(callback) {
+    loadAssignmentsTable(function() {
+        loadPreferencesTable(function() {
+            loadProjectsTable(function() {
+                loadStudentsTable(function() {
+                    callback();
+                });
+            });
+        });
+    });
+} 
+
+function loadAssignmentsTable(callback) {
+    for (let i in students) {
+        let student = students[i];
+        // projectID, studentID.
+        addAssignment(student[1], student[8], function() {});
+    }
+    callback();
+}
+
+function loadPreferencesTable(callback) {
+    for (let i in preferences) {
+        let preference = preferences[i];
+        // projectID, studentID, timeA, timeB, timeC, preference, comment.
+        addPreference(preference[1], preference[9], preference[2], preference[3], preference[4], preference[5], preference[6], function() {});
+    }
+    callback();
+}
+
+function loadProjectsTable(callback) {
+    for (let i in projects) {
+        let project = projects[i];
+
+        // Getting primary, secondary, and tertiary majors from 1-2-3 format 
+        let primary = "";
+        let secondary = "";
+        let tertiary = "";
+        for(let j = 0; j < majors.length; j++)
+        {
+            if(project[j + 3] == 1) primary = majors[j];
+            else if(project[j + 3] == 2) secondary = majors[j];
+            else if(project[j + 3] == 3) tertiary += majors[j] + ";";
+        }
+
+        // id, company, title, primary, secondary, tertiary, confidentiality, ip, courseTime, courseName, prototype.
+        addProject(project[0], project[1], project[2], primary, secondary, tertiary, project[14], project[15], project[16], project[17], project[18], function() {});
+    }
+    callback();
+}
+
+function loadStudentsTable(callback) {
+    for (let i in students) {
+        let student = students[i];
+        // id, first, last, major, nda, ip, onCampus.
+        addStudent(student[8], student[10], student[9], student[0], student[6], student[7], (student[11] == "Yes") ? 1 : 0, function() {});
+    }
+    callback();
+}
 
 
 // ==================================== QUERIES ====================================
