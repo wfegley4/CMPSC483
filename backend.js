@@ -5,7 +5,7 @@ let SQL = require('sql-template-strings');
 
 
 // Edit with your MySQL Password:
-const mySQLPassword = 'Best40MSOfMyLife'
+const mySQLPassword = 'XXXXXXXXXXXXXXXXXXXXXXX'
 
 const preferencesCSV = 'studentsFinal.csv';
 const projectsCSV = 'projectsFinal.csv';
@@ -34,15 +34,15 @@ const databaseConnection = mySQL.createConnection({
 
 
 // Main code.
-databaseSetup(function() {
-    readCSVs(function() {
+databaseSetup(function () {
+    readCSVs(function () {
         // Test Data.
         // addStudent('drs5972', 'Dan', 'Stebbins', 'CMPSC', 1, 1, 0, function() {});
         // addProject('XKCD', 'PSU', 'Test Project', 'CMPSC', 'EE', 'ME; CMPEN', 1, 0, '4 AM', 'CMPSC -2^10', 1, function() {});
         // addPreference('XKCD', 'drs5972', '8 AM', '10 AM', '4 AM', 2, 'Please no anything but this project I hate it.', function() {});
         // addAssignment('XKCD', 'drs5972', function() {});
         // console.log(students);
-        loadTables(function() {});
+        loadTables(function () { });
     });
 });
 
@@ -190,61 +190,55 @@ function readCSV(file, parser, callback) {
 }
 
 function loadTables(callback) {
-    loadAssignmentsTable(function() {
-        loadPreferencesTable(function() {
-            loadProjectsTable(function() {
-                loadStudentsTable(function() {
+    loadAssignmentsTable(function () {
+        loadPreferencesTable(function () {
+            loadProjectsTable(function () {
+                loadStudentsTable(function () {
                     callback();
                 });
             });
         });
     });
-} 
+}
 
-function loadAssignmentsTable(callback) {
-    for (let i in students) {
-        let student = students[i];
+async function loadAssignmentsTable(callback) {
+    for (const student of students) {
         // projectID, studentID.
-        addAssignment(student[1], student[8], function() {});
+        await addAssignment(student[1], student[8], function () { });
     }
     callback();
 }
 
-function loadPreferencesTable(callback) {
-    for (let i in preferences) {
-        let preference = preferences[i];
+async function loadPreferencesTable(callback) {
+    for (const preference of preferences) {
         // projectID, studentID, timeA, timeB, timeC, preference, comment.
-        addPreference(preference[1], preference[9], preference[2], preference[3], preference[4], preference[5], preference[6], function() {});
+        await addPreference(preference[1], preference[9], preference[2], preference[3], preference[4], preference[5], preference[6], function () { });
     }
     callback();
 }
 
-function loadProjectsTable(callback) {
-    for (let i in projects) {
-        let project = projects[i];
-
+async function loadProjectsTable(callback) {
+    for (const project of projects) {
         // Getting primary, secondary, and tertiary majors from 1-2-3 format 
         let primary = "";
         let secondary = "";
         let tertiary = "";
-        for(let j = 0; j < majors.length; j++)
-        {
-            if(project[j + 3] == 1) primary = majors[j];
-            else if(project[j + 3] == 2) secondary = majors[j];
-            else if(project[j + 3] == 3) tertiary += majors[j] + ";";
+        for (let j = 0; j < majors.length; j++) {
+            if (project[j + 3] == 1) primary = majors[j];
+            else if (project[j + 3] == 2) secondary = majors[j];
+            else if (project[j + 3] == 3) tertiary += majors[j] + ";";
         }
 
         // id, company, title, primary, secondary, tertiary, confidentiality, ip, courseTime, courseName, prototype.
-        addProject(project[0], project[1], project[2], primary, secondary, tertiary, project[14], project[15], project[16], project[17], project[18], function() {});
+        await addProject(project[0], project[1], project[2], primary, secondary, tertiary, project[14], project[15], project[16], project[17], project[18], function () { });
     }
     callback();
 }
 
-function loadStudentsTable(callback) {
-    for (let i in students) {
-        let student = students[i];
+async function loadStudentsTable(callback) {
+    for (const student of students) {
         // id, first, last, major, nda, ip, onCampus.
-        addStudent(student[8], student[10], student[9], student[0], student[6], student[7], (student[11] == "Yes") ? 1 : 0, function() {});
+        await addStudent(student[8], student[10], student[9], student[0], student[6], student[7], (student[11] == "Yes") ? 1 : 0, function () { });
     }
     callback();
 }
@@ -253,49 +247,66 @@ function loadStudentsTable(callback) {
 // ==================================== QUERIES ====================================
 
 // Adding rows to tables.
-function addAssignment(studentID, projectID, callback) {
-    const query = (SQL `INSERT INTO assignments
-                        (student_id, project_id)
-                        VALUES (${studentID}, ${projectID})`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        console.log('Assignment added!');
-        callback();
+function addAssignment(studentID, projectID) {
+    return new Promise(function (resolve, reject) {
+        const query = (SQL `INSERT INTO assignments
+                            (student_id, project_id)
+                            VALUES (${studentID}, ${projectID})`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) throw err;
+            else {
+                console.log('Assignment added!');
+                resolve();
+            }
+        });
     });
 }
 
-function addPreference(projectID, studentID, timeA, timeB, timeC, preference, comment, callback) {
-    const query = (SQL `INSERT INTO preferences
-                        (project_id, student_id, time_a, time_b, time_c, preference, comment)
-                        VALUES (${projectID}, ${studentID}, ${timeA}, ${timeB}, ${timeC}, ${preference}, ${comment})`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        console.log('Preference added!');
-        callback();
+function addPreference(projectID, studentID, timeA, timeB, timeC, preference, comment) {
+    return new Promise(function (resolve, reject) {
+        const query = (SQL `INSERT INTO preferences
+                            (project_id, student_id, time_a, time_b, time_c, preference, comment)
+                            VALUES (${projectID}, ${studentID}, ${timeA}, ${timeB}, ${timeC}, ${preference}, ${comment})`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            else {
+                console.log('Preference added!');
+                resolve();
+            }
+        });
     });
 }
 
-function addProject(id, company, title, primary, secondary, tertiary, confidentiality, ip, courseTime, courseName, prototype, callback) {
-    const query = (SQL `INSERT INTO projects
-                        (id, company, title, primary_major, secondary_major, tertiary_majors, confidentiality, ip, course_time, course_name, prototype)
-                        VALUES (${id}, ${company}, ${title}, ${primary}, ${secondary}, ${tertiary}, ${confidentiality}, ${ip}, ${courseTime}, ${courseName}, ${prototype})`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        console.log('Project added!');
-        callback();
+function addProject(id, company, title, primary, secondary, tertiary, confidentiality, ip, courseTime, courseName, prototype) {
+    return new Promise(function (resolve, reject) {
+        const query = (SQL `INSERT INTO projects
+                            (id, company, title, primary_major, secondary_major, tertiary_majors, confidentiality, ip, course_time, course_name, prototype)
+                            VALUES (${id}, ${company}, ${title}, ${primary}, ${secondary}, ${tertiary}, ${confidentiality}, ${ip}, ${courseTime}, ${courseName}, ${prototype})`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            else {
+                console.log('Project added!');
+                resolve();
+            }
+        });
     });
 }
 
 function addStudent(id, first, last, major, nda, ip, onCampus, callback) {
-    const query = (SQL `INSERT INTO students
-                        (id, first_name, last_name, major, nda, ip, on_campus)
-                        VALUES (${id}, ${first}, ${last}, ${major}, ${nda}, ${ip}, ${onCampus})`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        console.log('Student added!');
-        callback();
+    return new Promise(function (resolve, reject) {
+        const query = (SQL `INSERT INTO students
+                            (id, first_name, last_name, major, nda, ip, on_campus)
+                            VALUES (${id}, ${first}, ${last}, ${major}, ${nda}, ${ip}, ${onCampus})`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            else {
+                console.log('Student added!');
+                resolve();
+            }
+        });
     });
 }
+
 
 // Given a number, return all the teams that have less than that number of students.
 function getTeamsAbove(n, callback) {
