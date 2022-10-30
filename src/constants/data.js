@@ -8,36 +8,14 @@ const data = {
             value: '200 Students',
             percent: 30
         },
-        {
-            title: 'Completed Groups',
-            subtitle: 'Number of Groups',
-            value: '20',
-            percent: 30
-        },
-        {
-            title: 'Completed Students',
-            subtitle: 'Students List',
-            value: '200',
-            percent: 40
-        },
-        {
-            title: 'Incompleted Students',
-            subtitle: 'Students List',
-            value: '300',
-            percent: 60
-        },
-        {
-            title: 'Incompleted Students',
-            subtitle: 'Students List',
-            value: '300',
-            percent: 60
-        },
+        
         {
             title: 'Incompleted Students',
             subtitle: 'Students List',
             value: '300',
             percent: 60
         }
+        
         
     ],
     
