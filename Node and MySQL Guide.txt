@@ -8,6 +8,7 @@ Install this specific CSV reader: https://github.com/vanillaes/csv
 
 npm install mysql
 npm install sql-template-strings
+npm install csv-parse
 
 
 
