@@ -2,7 +2,7 @@ import React from 'react'
 import { Bar } from 'react-chartjs-2'
 import Box from '../components/box/Box'
 import DashboardWrapper, { DashboardWrapperMain, DashboardWrapperRight } from '../components/dashboard-wrapper/DashboardWrapper'
-import SummaryBox, { SummaryBoxSpecial } from '../components/summary-box/SummaryBox'
+import SummaryBox1, { SummaryBoxSpecial } from '../components/summary-box-1/SummaryBox1'
 import { colors, data } from '../constants'
 import {
     Chart as ChartJS,
@@ -35,8 +35,8 @@ const Dashboard = () => {
                         <div className="row">
                             {
                                 data.summary.map((item, index) => (
-                                    <div key={`summary-${index}`} className="col-4 col-md-6 col-sm-12 mb">
-                                        <SummaryBox item={item} />
+                                    <div key={`summary-${index}`} className="col-6 col-md-6 col-sm-12 mb">
+                                        <SummaryBox1 item={item} />
                                     </div>
                                 ))
                             }
@@ -52,13 +52,6 @@ const Dashboard = () => {
                     </div>
                 </div>
             </DashboardWrapperMain>
-            <DashboardWrapperRight>
-                <div className="title mb">Overall</div>
-                <div className="mb">
-                    <OverallList />
-                </div>
-                
-            </DashboardWrapperRight>
         </DashboardWrapper>
     )
 }
