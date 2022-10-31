@@ -1,21 +1,24 @@
 let csv = require('csv-parse');
+let createCsvWriter = require('csv-writer').createObjectCsvWriter;
 let fs = require('fs');
 let mySQL = require('mysql')
 let SQL = require('sql-template-strings');
 
 
 // Edit with your MySQL Password:
-const mySQLPassword = 'XXXXXXXXXXXXXXXXXXXXXXX'
+const mySQLPassword = 'Best40MSOfMyLife'
 
 const preferencesCSV = 'studentsFinal.csv';
 const projectsCSV = 'projectsFinal.csv';
 const studentsCSV = 'studentAssignments.csv';
+const studentsNoSurveyCSV = 'Students Without Prefs.csv';
 
 const majors = ['BME', 'CMPEN', 'CMPSC', 'DS', 'ED', 'EE', 'EGEE', 'ESC', 'IE', 'MATSE', 'ME'];
 
 let preferences;
 let projects;
 let students;
+let studentsNoSurvey;
 
 // MySQL connection objects.
 const mySQLConnection = mySQL.createConnection({
@@ -37,12 +40,12 @@ const databaseConnection = mySQL.createConnection({
 databaseSetup(function () {
     readCSVs(function () {
         // Test Data.
-        // addStudent('drs5972', 'Dan', 'Stebbins', 'CMPSC', 1, 1, 0, function() {});
-        // addProject('XKCD', 'PSU', 'Test Project', 'CMPSC', 'EE', 'ME; CMPEN', 1, 0, '4 AM', 'CMPSC -2^10', 1, function() {});
-        // addPreference('XKCD', 'drs5972', '8 AM', '10 AM', '4 AM', 2, 'Please no anything but this project I hate it.', function() {});
-        // addAssignment('XKCD', 'drs5972', function() {});
-        // console.log(students);
-        loadTables(function () { });
+        addStudent('drs5972', 'Dan', 'Stebbins', 'CMPSC', 1, 1, 0, function() {});
+        addProject('XKCD', 'PSU', 'Test Project', 'CMPSC', 'EE', 'ME; CMPEN', 1, 0, '4 AM', 'CMPSC -2^10', 1, function() {});
+        addPreference('XKCD', 'drs5972', '8 AM', '10 AM', '4 AM', 2, 'Please no anything but this project I hate it.', function() {});
+        addAssignment('XKCD', 'drs5972', function() {});
+        writeAssignmentsCSV(function() {});
+        // loadTables(function () { });
     });
 });
 
@@ -173,13 +176,15 @@ function createStudentsTable(callback) {
 }
 
 
-// ==================================== CSV STUFF ====================================
+// ==================================== CSV READING AND TABLE LOADING ====================================
 
 function readCSVs(callback) {
     readCSV(preferencesCSV, csv.parse({ delimiter: ',' }, function (err, data) { preferences = data.slice(1, data.length) }), function () {
         readCSV(projectsCSV, csv.parse({ delimiter: ',' }, function (err, data) { projects = data.slice(1, data.length) }), function () {
             readCSV(studentsCSV, csv.parse({ delimiter: ',' }, function (err, data) { students = data.slice(1, data.length) }), function () {
-                callback();
+                readCSV(studentsNoSurveyCSV, csv.parse({ delimiter: ',' }, function (err, data) { studentsNoSurvey = data.slice(1, data.length) }), function () {
+                    callback();
+                });
             });
         });
     });
@@ -240,11 +245,77 @@ async function loadStudentsTable(callback) {
         // id, first, last, major, nda, ip, onCampus.
         await addStudent(student[8], student[10], student[9], student[0], student[6], student[7], (student[11] == "Yes") ? 1 : 0, function () { });
     }
+    for (const student of studentsNoSurvey) {
+        // Assume NULL for major and 0 for NDA, IP, and onCampus until further notice.
+        await addStudent(student[2].substring(0, student[2].indexOf("@")), student[0], student[1], '', 0, 0, 0, function () { });
+    }
+    callback();
+}
+
+// ==================================== CSV WRITING FROM TABLES ====================================
+
+// I'm assuming the other CSVs don't need to be written to, but they can be added later if they do.
+async function writeAssignmentsCSV(callback) {
+    const csvWriter = createCsvWriter({
+        path: 'tempStudentAssignments.csv',
+        header: [
+          {id: 'major', title: 'Major'},
+          {id: 'projectID', title: 'ProjectID'},
+          {id: 'timeA', title: 'TimeA'},
+          {id: 'timeB', title: 'TimeB'},
+          {id: 'timeC', title: 'TimeC'},
+          {id: 'comments', title: 'Comments'},
+          {id: 'nda', title: 'Student_NDA'},
+          {id: 'ip', title: 'Student_IP'},
+          {id: 'studentID', title: 'campus_id'},
+          {id: 'lastName', title: 'last_name'},
+          {id: 'firstName', title: 'first_name'},
+          {id: 'onCampus', title: 'OnCampus'},
+        ]
+    });
+
+    const data = [
+        // {
+        //   name: 'John',
+        //   surname: 'Snow',
+        //   age: 26,
+        //   gender: 'M'
+        // }, {
+        //   name: 'Clair',
+        //   surname: 'White',
+        //   age: 33,
+        //   gender: 'F',
+        // }, {
+        //   name: 'Fancy',
+        //   surname: 'Brown',
+        //   age: 78,
+        //   gender: 'F'
+        // }
+    ];
+    var assignments = await getAssignments();
+    for (const assignment of assignments) {
+
+    }
+    console.log(temp)
     callback();
 }
 
 
 // ==================================== QUERIES ====================================
+
+// Gets all assignments.
+function getAssignments() {
+    return new Promise(function (resolve, reject) {
+        const query = (SQL `SELECT * FROM assignments`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) throw err;
+            else {
+                console.log('Assignments Retrieved!');
+                resolve(result);
+            }
+        });
+    });
+}
 
 // Adding rows to tables.
 function addAssignment(studentID, projectID) {
@@ -296,7 +367,7 @@ function addStudent(id, first, last, major, nda, ip, onCampus, callback) {
     return new Promise(function (resolve, reject) {
         const query = (SQL `INSERT INTO students
                             (id, first_name, last_name, major, nda, ip, on_campus)
-                            VALUES (${id}, ${first}, ${last}, ${major}, ${nda}, ${ip}, ${onCampus})`);
+                            VALUES (${id}, ${first}, ${last}, NULLIF(${major}, ''), ${nda}, ${ip}, ${onCampus})`);
         databaseConnection.query(query, function (err, result) {
             if (err) reject(err);
             else {
