@@ -3,6 +3,7 @@ let createCsvWriter = require('csv-writer').createObjectCsvWriter;
 let fs = require('fs');
 let mySQL = require('mysql')
 let SQL = require('sql-template-strings');
+const { isDataView } = require('util/types');
 
 
 // Edit with your MySQL Password:
@@ -40,12 +41,14 @@ const databaseConnection = mySQL.createConnection({
 databaseSetup(function () {
     readCSVs(function () {
         // Test Data.
-        addStudent('drs5972', 'Dan', 'Stebbins', 'CMPSC', 1, 1, 0, function() {});
-        addProject('XKCD', 'PSU', 'Test Project', 'CMPSC', 'EE', 'ME; CMPEN', 1, 0, '4 AM', 'CMPSC -2^10', 1, function() {});
-        addPreference('XKCD', 'drs5972', '8 AM', '10 AM', '4 AM', 2, 'Please no anything but this project I hate it.', function() {});
-        addAssignment('XKCD', 'drs5972', function() {});
-        writeAssignmentsCSV(function() {});
-        // loadTables(function () { });
+        // addStudent('drs5972', 'Dan', 'Stebbins', 'CMPSC', 1, 1, 0, function() {});
+        // addProject('XKCD', 'PSU', 'Test Project', 'CMPSC', 'EE', 'ME; CMPEN', 1, 0, '4 AM', 'CMPSC -2^10', 1, function() {});
+        // addPreference('XKCD', 'drs5972', '8 AM', '10 AM', '4 AM', 2, 'Please no anything but this project I hate it.', function() {});
+        // addAssignment('drs5972', 'XKCD', function() {});
+
+        loadTables(function () {
+            writeAssignmentsCSV(function() {});
+        });
     });
 });
 
@@ -162,7 +165,7 @@ function createProjectsTable(callback) {
 function createStudentsTable(callback) {
     const query = (SQL `CREATE TABLE IF NOT EXISTS students (
                         id                  VARCHAR(64),
-                        first_name           VARCHAR(255),
+                        first_name          VARCHAR(255),
                         last_name           VARCHAR(255),
                         major               VARCHAR(16),
                         nda                 TINYINT(1),
@@ -209,7 +212,7 @@ function loadTables(callback) {
 async function loadAssignmentsTable(callback) {
     for (const student of students) {
         // projectID, studentID.
-        await addAssignment(student[1], student[8], function () { });
+        await addAssignment(student[8], student[1], function () { });
     }
     callback();
 }
@@ -264,7 +267,7 @@ async function writeAssignmentsCSV(callback) {
           {id: 'timeA', title: 'TimeA'},
           {id: 'timeB', title: 'TimeB'},
           {id: 'timeC', title: 'TimeC'},
-          {id: 'comments', title: 'Comments'},
+          {id: 'comment', title: 'Comments'},
           {id: 'nda', title: 'Student_NDA'},
           {id: 'ip', title: 'Student_IP'},
           {id: 'studentID', title: 'campus_id'},
@@ -274,29 +277,30 @@ async function writeAssignmentsCSV(callback) {
         ]
     });
 
-    const data = [
-        // {
-        //   name: 'John',
-        //   surname: 'Snow',
-        //   age: 26,
-        //   gender: 'M'
-        // }, {
-        //   name: 'Clair',
-        //   surname: 'White',
-        //   age: 33,
-        //   gender: 'F',
-        // }, {
-        //   name: 'Fancy',
-        //   surname: 'Brown',
-        //   age: 78,
-        //   gender: 'F'
-        // }
-    ];
-    var assignments = await getAssignments();
+    let data = [];
+    let assignments = await getAssignments();
     for (const assignment of assignments) {
+        let row = {};
+        row['studentID'] = assignment.student_id;
+        row['projectID'] = assignment.project_id;
 
+        let student = await getStudentData(assignment.student_id);
+        student = student[0];
+        row['firstName'] = student.first_name;
+        row['lastName'] = student.last_name;
+        row['major'] = student.major;
+        row['nda'] = student.nda;
+        row['ip'] = student.ip;
+        row['onCampus'] = student.on_campus == 1 ? "Yes" : "No";
+
+        let comment = await getComment(assignment.student_id, assignment.project_id);
+        comment = comment[0];
+        row['comment'] = comment.comment;
+
+        data.push(row);
     }
-    console.log(temp)
+    await csvWriter.writeRecords(data);
+    console.log("CSV Written!")
     callback();
 }
 
@@ -308,9 +312,39 @@ function getAssignments() {
     return new Promise(function (resolve, reject) {
         const query = (SQL `SELECT * FROM assignments`);
         databaseConnection.query(query, function (err, result) {
-            if (err) throw err;
+            if (err) reject(err);
             else {
                 console.log('Assignments Retrieved!');
+                resolve(result);
+            }
+        });
+    });
+}
+
+function getStudentData(studentID) {
+    return new Promise(function (resolve, reject) {
+        const query = (SQL `SELECT first_name, last_name, major, nda, ip, on_campus
+                            FROM students
+                            WHERE id = ${studentID}`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            else {
+                console.log('Student Data Retrieved!');
+                resolve(result);
+            }
+        });
+    });
+}
+
+function getComment(studentID, projectID) {
+    return new Promise(function (resolve, reject) {
+        const query = (SQL `SELECT comment
+                            FROM preferences
+                            WHERE student_id = ${studentID} AND project_id = ${projectID}`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            else {
+                console.log('Comment Retrieved!');
                 resolve(result);
             }
         });
@@ -324,7 +358,7 @@ function addAssignment(studentID, projectID) {
                             (student_id, project_id)
                             VALUES (${studentID}, ${projectID})`);
         databaseConnection.query(query, function (err, result) {
-            if (err) throw err;
+            if (err) reject(err);
             else {
                 console.log('Assignment added!');
                 resolve();
@@ -384,7 +418,7 @@ function getTeamsAbove(n, callback) {
     // Put the query in the ``.
     const query = (SQL ``);
     databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
+        if (err) reject(err);
         // Do something with the result.
         callback();
     });
@@ -395,7 +429,7 @@ function getTeamsBelow(n, callback) {
     // Put the query in the ``.
     const query = (SQL ``);
     databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
+        if (err) reject(err);
         // Do something with the result.
         callback();
     });
@@ -406,7 +440,7 @@ function getMajorCount(projectID, major, callback) {
     // Put the query in the ``.
     const query = (SQL ``);
     databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
+        if (err) reject(err);
         // Do something with the result.
         callback();
     });
@@ -417,7 +451,7 @@ function holdsMajorInequality(projectID, callback) {
     // Put the query in the ``. Remember to use getMajorInequality().
     const query = (SQL ``);
     databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
+        if (err) reject(err);
         // Do something with the result.
         callback();
     });
@@ -428,7 +462,7 @@ function getAlternateProjects(studentID, callback) {
     // Put the query in the ``.
     const query = (SQL ``);
     databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
+        if (err) reject(err);
         // Do something with the result.
         callback();
     });
@@ -439,29 +473,29 @@ function getProjectData(projectID, callback) {
     // Put the query in the ``.
     const query = (SQL ``);
     databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
+        if (err) reject(err);
         // Do something with the result.
         callback();
     });
 }
 
 // Given a student, return all display information for that student.
-function getStudentData(studentID, callback) {
-    // Put the query in the ``.
-    const query = (SQL ``);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        // Do something with the result.
-        callback();
-    });
-}
+// function getStudentData(studentID, callback) {
+//     // Put the query in the ``.
+//     const query = (SQL ``);
+//     databaseConnection.query(query, function (err, result) {
+//         if (err) reject(err);
+//         // Do something with the result.
+//         callback();
+//     });
+// }
 
 // Given a project, return all display information for all of it's students.
 function getStudentsInProject(projectID, callback) {
     // Put the query in the ``.
     const query = (SQL ``);
     databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
+        if (err) reject(err);
         // Do something with the result.
         callback();
     });
@@ -472,7 +506,7 @@ function updateAssignment(studentID, projectID, callback) {
     // Put the query in the ``.
     const query = (SQL ``);
     databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
+        if (err) reject(err);
         // Do something with the result.
         callback();
     });
