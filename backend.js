@@ -1,14 +1,15 @@
-const { toHaveErrorMessage } = require('@testing-library/jest-dom/dist/matchers');
+// const { toHaveErrorMessage } = require('@testing-library/jest-dom/dist/matchers');
 let csv = require('csv-parse');
 let createCsvWriter = require('csv-writer').createObjectCsvWriter;
 let fs = require('fs');
-let mySQL = require('mysql')
+let mySQL = require('mysql');
+const { resolve } = require('path');
 let SQL = require('sql-template-strings');
 const { isDataView } = require('util/types');
 
 
 // Edit with your MySQL Password:
-const mySQLPassword = 'password'
+const mySQLPassword = 'Best40MSOfMyLife'
 
 const preferencesCSV = 'studentsFinal.csv';
 const projectsCSV = 'projectsFinal.csv';
@@ -288,7 +289,7 @@ async function writeAssignmentsCSV(callback) {
         row['studentID'] = assignment.student_id;
         row['projectID'] = assignment.project_id;
 
-        let student = await getStudentData(assignment.student_id);
+        let student = await getStudentDataForWrite(assignment.student_id);
         student = student[0];
         row['firstName'] = student.first_name;
         row['lastName'] = student.last_name;
@@ -325,7 +326,7 @@ function getAssignments() {
     });
 }
 
-function getStudentData(studentID) {
+function getStudentDataForWrite(studentID) {
     return new Promise(function (resolve, reject) {
         const query = (SQL `SELECT first_name, last_name, major, nda, ip, on_campus
                             FROM students
@@ -402,7 +403,7 @@ function addProject(id, company, title, primary, secondary, tertiary, confidenti
     });
 }
 
-function addStudent(id, first, last, major, nda, ip, onCampus, callback) {
+function addStudent(id, first, last, major, nda, ip, onCampus) {
     return new Promise(function (resolve, reject) {
         const query = (SQL `INSERT INTO students
                             (id, first_name, last_name, major, nda, ip, on_campus)
@@ -421,167 +422,177 @@ function addStudent(id, first, last, major, nda, ip, onCampus, callback) {
 // ==================================== QUERY FUNCTIONS ====================================
 
 // Given a number, return all the teams that have greater than that number of students.
-//Maybe also get it to display the count
-function getTeamsAbove(n, callback) {
-    // Put the query in the ``.
-    const query = (SQL `SELECT projects.title, projects.company, projects.id
-                        FROM projects
-                        INNER JOIN assignments 
-                            ON projects.id = assignments.project_id
-                        GROUP BY assignments.project_id
-                        HAVING COUNT(assignments.project_id) >= ${n}`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        return result;
-        callback();
+// Maybe also get it to display the count
+function getTeamsAbove(n) {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``.
+        const query = (SQL `SELECT projects.title, projects.company, projects.id
+                            FROM projects
+                            INNER JOIN assignments 
+                                ON projects.id = assignments.project_id
+                            GROUP BY assignments.project_id
+                            HAVING COUNT(assignments.project_id) >= ${n}`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            resolve(result);
+        });
     });
 }
 
 // Given a number, return all the teams that have less than that number of students.
-function getTeamsBelow(n, callback) {
-    // Put the query in the ``.
-    const query = (SQL `SELECT projects.title, projects.company, projects.id
-                        FROM projects
-                        INNER JOIN assignments 
-                            ON projects.id = assignments.project_id
-                        GROUP BY assignments.project_id
-                        HAVING COUNT(assignments.project_id) <= ${n}`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        return result;
-        callback();
+function getTeamsBelow(n) {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``.
+        const query = (SQL `SELECT projects.title, projects.company, projects.id
+                            FROM projects
+                            INNER JOIN assignments 
+                                ON projects.id = assignments.project_id
+                            GROUP BY assignments.project_id
+                            HAVING COUNT(assignments.project_id) <= ${n}`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            resolve(result);
+        });
     });
 }
 
 //Displays the number of students on a team given a project ID
-function getTeamCount(projectID, callback) {
+function getTeamCount(projectID) {
     // Put the query in the ``.
     const query = (SQL `SELECT COUNT(assignments.project_id)
                         FROM assignments
                         WHERE assignments.project_id = ${projectID}
                         GROUP BY assignments.project_id`)
     databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        return result;
-        callback();
+        if (err) reject(err);
+        resolve(result);
     });
 }
 
 // Given a project and a major, return how many students of that major are on that project.
-function getMajorCount(projectID, major, callback) {
-    // Put the query in the ``.
-    const query = (SQL `SELECT COUNT(s.id)
-                        FROM assignments AS a
-                        INNER JOIN students AS s
-                            ON a.student_id = s.id
-                        WHERE a.project_id = ${projectID} AND s.major = ${major}`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        return result;
-        callback();
+function getMajorCount(projectID, major) {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``.
+        const query = (SQL `SELECT COUNT(s.id)
+                            FROM assignments AS a
+                            INNER JOIN students AS s
+                                ON a.student_id = s.id
+                            WHERE a.project_id = ${projectID} AND s.major = ${major}`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            resolve(result);
+        });
     });
 }
 
 // Given a project, return whether or not it has the right amount of primary, secondary, and tertiary majors.
-function holdsMajorInequality(projectID, callback) {
-    // Put the query in the ``. Remember to use getMajorCount().
-    const query = (SQL `SELECT `);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        return result;
-        callback();
+function holdsMajorInequality(projectID) {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``. Remember to use getMajorCount().
+        const query = (SQL `SELECT `);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            resolve(result);
+        });
     });
 }
 
 // Given a student, return a list of other projects they could be moved to according to their preferences and major.
-function getAlternateProjects(studentID, callback) {
-    // Put the query in the ``.
-    const query = (SQL ``);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        return result;
-        callback();
+function getAlternateProjects(studentID) {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``.
+        const query = (SQL ``);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            resolve(result);
+        });
     });
 }
 
 // Given a project, return all display information for that project.
-function getProjectData(projectID, callback) {
-    // Put the query in the ``.
-    const query = (SQL `SELECT p.company, p.title, 
-                                p.primary_major, p.secondary_major,p.tertiary_majors
-                                p.confidentiality, p.ip, p.course_time, 
-                                p.couse_name, p.prototype
-                            FROM projects AS p
-                            WHERE p.id = ${projectID}`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        return result;
-        callback();
+function getProjectData(projectID) {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``.
+        const query = (SQL `SELECT p.company, p.title, 
+                                    p.primary_major, p.secondary_major,p.tertiary_majors
+                                    p.confidentiality, p.ip, p.course_time, 
+                                    p.couse_name, p.prototype
+                                FROM projects AS p
+                                WHERE p.id = ${projectID}`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            resolve(result);
+        });
     });
 }
 
 // Given a student, return all display information for that student.
 //want to add current project
-function getStudentData(studentID, callback) {
-    // Put the query in the ``.
-    const query = (SQL `SELECT s.first_name, s.last_name, s.major, 
-                                s.nda, s.ip, s.on_campus,
-                                p.company, p.title
-                        FROM assignments AS a
-                        INNER JOIN students AS s
-                            ON a.student_id = s.id
-                        INNER JOIN projects AS p
-                            ON a.project_id = p.id
-                        WHERE a.student_id = ${studentID}`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        return result;
-        callback();
+function getStudentData(studentID) {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``.
+        const query = (SQL `SELECT s.first_name, s.last_name, s.major, 
+                                    s.nda, s.ip, s.on_campus,
+                                    p.company, p.title
+                            FROM assignments AS a
+                            INNER JOIN students AS s
+                                ON a.student_id = s.id
+                            INNER JOIN projects AS p
+                                ON a.project_id = p.id
+                            WHERE a.student_id = ${studentID}`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            resolve(result);
+        });
     });
 }
 
 // Given a project, return all display information for all of it's students.
-function getStudentsInProject(projectID, callback) {
-    // Put the query in the ``.
-    const query = (SQL `SELECT `);
-    databaseConnection.query(query, function (err, result) {
-        if (err) reject(err);
-        // Do something with the result.
-        callback();
+function getStudentsInProject(projectID) {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``.
+        const query = (SQL `SELECT `);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            // Do something with the result.
+        });
     });
 }
 
 // Given a student and a project, update the student’s entry in the assignments table to move them to that project.
-function updateAssignment(studentID, projectID, callback) {
-    // Put the query in the ``.
-    const query = (SQL `UPDATE assigments 
-                        SET project_id = ${projectID} 
-                        WHERE student_id = $${studentID}`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        // Do something with the result.
-        callback();
+function updateAssignment(studentID, projectID) {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``.
+        const query = (SQL `UPDATE assigments 
+                            SET project_id = ${projectID} 
+                            WHERE student_id = $${studentID}`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            // Do something with the result.
+        });
     });
 }
 
-function getMajorDistribution(callback) {
-    // Put the query in the ``.
-    const query = (SQL `SELECT
-                        s.major, COUNT(*)
-                        FROM students AS s
-                        GROUP BY s.major;`);
-    databaseConnection.query(query, function (err, result) {
-        if (err) throw err;
-        // Do something with the result.
-        callback();
+function getMajorDistribution() {
+    return new Promise(function (resolve, reject) {
+        // Put the query in the ``.
+        const query = (SQL `SELECT
+                            s.major, COUNT(*)
+                            FROM students AS s
+                            GROUP BY s.major;`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            // Do something with the result.
+        });
     });
 }
 
-function getCompletedPercent(callback){
-    const query = (SQL ``);
-    databaseConnection.query(query, function (err, result) {
-        if (err) reject(err);
-        // Do something with the result.
-        callback();
+function getCompletedPercent(){
+    return new Promise(function (resolve, reject) {
+        const query = (SQL ``);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            // Do something with the result.
+        });
     });
 }
