@@ -14,12 +14,12 @@ import {
 import { Icon, Text, View } from "@aws-amplify/ui-react";
 export default function ProjectTag(props) {
   const {
-    CompName,
     ProjName,
-    PeopleStatus,
     First,
     Second,
     Optional,
+    PeopleStatus,
+    CompName,
     overrides: overridesProp,
     ...rest
   } = props;

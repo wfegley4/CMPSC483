@@ -8,12 +8,12 @@ import * as React from "react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { ViewProps } from "@aws-amplify/ui-react";
 export declare type ProjectTagProps = React.PropsWithChildren<Partial<ViewProps> & {
-    CompName?: String;
     ProjName?: String;
-    PeopleStatus?: String;
     First?: String;
     Second?: String;
     Optional?: String;
+    PeopleStatus?: Number;
+    CompName?: String;
 } & {
     lock?: "False" | "True";
     memberStatus?: "Less" | "More" | "Regular";
