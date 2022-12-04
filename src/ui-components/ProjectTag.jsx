@@ -961,7 +961,7 @@ export default function ProjectTag(props) {
         left="18px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children={PeopleStatus}
+        children={`${"People: "}${PeopleStatus}`}
         {...getOverrideProps(overrides, "People")}
       ></Text>
       <Text
