@@ -17,6 +17,9 @@ export default function ProjectTag(props) {
     CompName,
     ProjName,
     PeopleStatus,
+    First,
+    Second,
+    Optional,
     overrides: overridesProp,
     ...rest
   } = props;
@@ -36,10 +39,10 @@ export default function ProjectTag(props) {
         "Group 1": {},
         LF3: { height: "30px" },
         Vector151: {},
-        People: { children: "People: 6/4-6" },
-        First: { children: "First: CS 2" },
-        Sec: { children: "Sec: EE  2" },
-        Opt: { children: "Opt: IST  2" },
+        People: {},
+        First: {},
+        Sec: {},
+        Opt: {},
         Company: {},
         Vector157: {},
         ProjectTag: {},
@@ -85,10 +88,10 @@ export default function ProjectTag(props) {
             height: 10.850006103515625,
           },
         },
-        People: { children: "People: 6/4-6" },
-        First: { children: "First: CS 2" },
-        Sec: { children: "Sec: EE  2" },
-        Opt: { children: "Opt: IST  2" },
+        People: {},
+        First: {},
+        Sec: {},
+        Opt: {},
         Company: {},
         Vector157: {},
         ProjectTag: {},
@@ -114,9 +117,9 @@ export default function ProjectTag(props) {
         "Group 1": { height: "78px", top: "-3px" },
         LF3: { height: "30px" },
         Vector151: {},
-        People: { children: "People: 8/4-6" },
-        First: { children: "First: CS 5" },
-        Sec: { children: "Sec: EE  3" },
+        People: {},
+        First: {},
+        Sec: {},
         Opt: {},
         Company: {},
         Vector157: {},
@@ -164,9 +167,9 @@ export default function ProjectTag(props) {
             height: 10.850006103515625,
           },
         },
-        People: { children: "People: 8/4-6" },
-        First: { children: "First: CS 5" },
-        Sec: { children: "Sec: EE  3" },
+        People: {},
+        First: {},
+        Sec: {},
         Opt: {},
         Company: {},
         Vector157: {},
@@ -250,10 +253,10 @@ export default function ProjectTag(props) {
             height: 10.850006103515625,
           },
         },
-        People: { children: "People: 6/4-6" },
-        First: { children: "First: CS 2" },
-        Sec: { children: "Sec: EE  2" },
-        Opt: { children: "Opt: IST  2" },
+        People: {},
+        First: {},
+        Sec: {},
+        Opt: {},
         Company: {},
         Vector157: {
           paths: [
@@ -307,10 +310,10 @@ export default function ProjectTag(props) {
             height: 10.849998474121094,
           },
         },
-        People: { children: "People: 6/4-6" },
-        First: { children: "First: CS 2" },
-        Sec: { children: "Sec: EE  2" },
-        Opt: { children: "Opt: IST  2" },
+        People: {},
+        First: {},
+        Sec: {},
+        Opt: {},
         Company: {},
         Vector157: {
           paths: [
@@ -351,9 +354,9 @@ export default function ProjectTag(props) {
             height: 10.850006103515625,
           },
         },
-        People: { children: "People: 8/4-6" },
-        First: { children: "First: CS 5" },
-        Sec: { children: "Sec: EE  3" },
+        People: {},
+        First: {},
+        Sec: {},
         Opt: {},
         Company: {},
         Vector157: {
@@ -405,9 +408,9 @@ export default function ProjectTag(props) {
             height: 10.849998474121094,
           },
         },
-        People: { children: "People: 8/4-6" },
-        First: { children: "First: CS 5" },
-        Sec: { children: "Sec: EE  3" },
+        People: {},
+        First: {},
+        Sec: {},
         Opt: {},
         Company: {},
         Vector157: {
@@ -515,10 +518,10 @@ export default function ProjectTag(props) {
         "Group 1": {},
         LF3: { height: "30px" },
         Vector151: {},
-        People: { children: "People: 6/4-6" },
-        First: { children: "First: CS 2" },
-        Sec: { children: "Sec: EE  2" },
-        Opt: { children: "Opt: IST  2" },
+        People: {},
+        First: {},
+        Sec: {},
+        Opt: {},
         Company: {},
         Vector157: {
           paths: [
@@ -572,10 +575,10 @@ export default function ProjectTag(props) {
             height: 10.850006103515625,
           },
         },
-        People: { children: "People: 6/4-6" },
-        First: { children: "First: CS 2" },
-        Sec: { children: "Sec: EE  2" },
-        Opt: { children: "Opt: IST  2" },
+        People: {},
+        First: {},
+        Sec: {},
+        Opt: {},
         Company: {},
         Vector157: {
           paths: [
@@ -609,9 +612,9 @@ export default function ProjectTag(props) {
         "Group 1": { height: "78px", top: "-3px" },
         LF3: { height: "30px" },
         Vector151: {},
-        People: { children: "People: 8/4-6" },
-        First: { children: "First: CS 5" },
-        Sec: { children: "Sec: EE  3" },
+        People: {},
+        First: {},
+        Sec: {},
         Opt: {},
         Company: {},
         Vector157: {
@@ -667,9 +670,9 @@ export default function ProjectTag(props) {
             height: 10.850006103515625,
           },
         },
-        People: { children: "People: 8/4-6" },
-        First: { children: "First: CS 5" },
-        Sec: { children: "Sec: EE  3" },
+        People: {},
+        First: {},
+        Sec: {},
         Opt: {},
         Company: {},
         Vector157: {
@@ -980,7 +983,7 @@ export default function ProjectTag(props) {
         left="193px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="First: CS 1"
+        children={First}
         {...getOverrideProps(overrides, "First")}
       ></Text>
       <Text
@@ -1002,7 +1005,7 @@ export default function ProjectTag(props) {
         left="192px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="Sec: EE  0"
+        children={Second}
         {...getOverrideProps(overrides, "Sec")}
       ></Text>
       <Text
@@ -1024,7 +1027,7 @@ export default function ProjectTag(props) {
         left="192px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="Opt: IST  1"
+        children={Optional}
         {...getOverrideProps(overrides, "Opt")}
       ></Text>
       <Text

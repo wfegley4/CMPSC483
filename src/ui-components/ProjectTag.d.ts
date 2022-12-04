@@ -11,6 +11,9 @@ export declare type ProjectTagProps = React.PropsWithChildren<Partial<ViewProps>
     CompName?: String;
     ProjName?: String;
     PeopleStatus?: String;
+    First?: String;
+    Second?: String;
+    Optional?: String;
 } & {
     lock?: "False" | "True";
     memberStatus?: "Less" | "More" | "Regular";
