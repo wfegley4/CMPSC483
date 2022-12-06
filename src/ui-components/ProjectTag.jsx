@@ -14,12 +14,12 @@ import {
 import { Icon, Text, View } from "@aws-amplify/ui-react";
 export default function ProjectTag(props) {
   const {
-    CompName,
     ProjName,
-    PeopleStatus,
     First,
     Second,
     Optional,
+    PeopleStatus,
+    CompName,
     overrides: overridesProp,
     ...rest
   } = props;
@@ -961,7 +961,7 @@ export default function ProjectTag(props) {
         left="18px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children={PeopleStatus}
+        children={`${"People: "}${PeopleStatus}`}
         {...getOverrideProps(overrides, "People")}
       ></Text>
       <Text
