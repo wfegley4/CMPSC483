@@ -42,7 +42,7 @@ const majors = [
 async function loadAssignmentsTable(callback) {
   console.log("loadAssigmentsTable()");
   for (const student of students) {
-    // studentid, projectid
+    //  studentid,projectid,
     await addAssignment(student[8], student[1], function () {});
   }
   for (const student of studentsNoSurvey) {
@@ -128,7 +128,7 @@ async function loadStudentsTable(callback) {
       student[2].substring(0, student[2].indexOf("@")),
       student[0],
       student[1],
-      "",
+      student[3].substring(0, student[3].indexOf(4) - 1),
       0,
       0,
       0,
