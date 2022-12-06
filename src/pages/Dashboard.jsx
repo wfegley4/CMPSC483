@@ -50,7 +50,7 @@ const Dashboard = () => {
       },
       {
         title: "Assigned Students",
-        subtitle: "Progess",
+        subtitle: "Progress",
         value: "Loading...",
         percent: 0,
       },
