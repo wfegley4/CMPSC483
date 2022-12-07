@@ -216,6 +216,9 @@ async function loadAssignmentsTable(callback) {
         // projectID, studentID.
         await addAssignment(student[8], student[1], function () { });
     }
+    for (const student of studentsNoSurvey) {
+        await addAssignment(student[2].substring(0, student[2].indexOf("@")), null, function () { });
+    }
     callback();
 }
 
@@ -223,6 +226,9 @@ async function loadPreferencesTable(callback) {
     for (const preference of preferences) {
         // projectID, studentID, timeA, timeB, timeC, preference, comment.
         await addPreference(preference[1], preference[9], preference[2], preference[3], preference[4], preference[5], preference[6], function () { });
+    }
+    for (const student of studentsNoSurvey) {
+        await addPreference(null, student[2].substring(0, student[2].indexOf("@")), student[4], null, null, null, null, function () { });
     }
     console.log("Preference Table Loaded!");
     callback();
@@ -254,15 +260,14 @@ async function loadStudentsTable(callback) {
         
     }
     for (const student of studentsNoSurvey) {
-        // Assume NULL for major and 0 for NDA, IP, and onCampus until further notice.
-        await addStudent(student[2].substring(0, student[2].indexOf("@")), student[0], student[1], '', 0, 0, 0, function () { });
+        // Assume 0 for NDA, IP, and onCampus until further notice.
+        await addStudent(student[2].substring(0, student[2].indexOf("@")), student[0], student[1], student[3].substring(0, student[3].indexOf(" ")), 0, 0, 0, function () { });
     }
     callback();
 }
 
 // ==================================== CSV WRITING FROM TABLES ====================================
 
-// I'm assuming the other CSVs don't need to be written to, but they can be added later if they do.
 async function writeAssignmentsCSV(callback) {
     const csvWriter = createCsvWriter({
         path: 'tempStudentAssignments.csv',
@@ -287,8 +292,7 @@ async function writeAssignmentsCSV(callback) {
     for (const assignment of assignments) {
         let row = {};
         row['studentID'] = assignment.student_id;
-        row['projectID'] = assignment.project_id;
-
+  
         let student = await getStudentDataForWrite(assignment.student_id);
         student = student[0];
         row['firstName'] = student.first_name;
@@ -298,10 +302,24 @@ async function writeAssignmentsCSV(callback) {
         row['ip'] = student.ip;
         row['onCampus'] = student.on_campus == 1 ? "Yes" : "No";
 
-        let comment = await getComment(assignment.student_id, assignment.project_id);
-        comment = comment[0];
-        row['comment'] = comment.comment;
-
+        console.log(assignment.project_id)
+        if (assignment.project_id !== null) {
+            row['projectID'] = assignment.project_id;
+            let preference = await getPreferenceDataForWrite(assignment.student_id, assignment.project_id);
+            preference = preference[0]
+            row['comment'] = preference.comment;
+            row['timeA'] = preference.time_a;
+            row['timeB'] = preference.time_b;
+            row['timeC'] = preference.time_c;
+        }
+        else {
+            row['projectID'] = '&nbsp;';
+            let preference = await getNoSurveyTimeForWrite(assignment.student_id);
+            row['comment'] = '&nbsp;';
+            row['timeA'] = preference[0].time_a;
+            row['timeB'] = '&nbsp;';
+            row['timeC'] = '&nbsp;';
+        }
         data.push(row);
     }
     await csvWriter.writeRecords(data);
@@ -341,15 +359,30 @@ function getStudentDataForWrite(studentID) {
     });
 }
 
-function getComment(studentID, projectID) {
+function getPreferenceDataForWrite(studentID, projectID) {
     return new Promise(function (resolve, reject) {
-        const query = (SQL `SELECT comment
+        const query = (SQL `SELECT comment, time_a, time_b, time_c
                             FROM preferences
                             WHERE student_id = ${studentID} AND project_id = ${projectID}`);
         databaseConnection.query(query, function (err, result) {
             if (err) reject(err);
             else {
-                console.log('Comment Retrieved!');
+                console.log('Preferences Retrieved!');
+                resolve(result);
+            }
+        });
+    });
+}
+
+function getNoSurveyTimeForWrite(studentID) {
+    return new Promise(function (resolve, reject) {
+        const query = (SQL `SELECT time_a
+                            FROM preferences
+                            WHERE student_id = ${studentID}`);
+        databaseConnection.query(query, function (err, result) {
+            if (err) reject(err);
+            else {
+                console.log('Preferred Time Retrieved!');
                 resolve(result);
             }
         });
