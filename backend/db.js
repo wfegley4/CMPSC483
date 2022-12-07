@@ -2,7 +2,7 @@ const mySQL = require("mysql2");
 const SQL = require("sql-template-strings");
 
 // Edit with your MySQL Password:
-const mySQLPassword = "password";
+const mySQLPassword = "Best40MSOfMyLife";
 
 // MySQL connection objects.
 const mySQLConnection = mySQL.createConnection({

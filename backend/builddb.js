@@ -70,6 +70,9 @@ async function loadPreferencesTable(callback) {
       function () {}
     );
   }
+  for (const student of studentsNoSurvey) {
+    await addPreference(null, student[2].substring(0, student[2].indexOf("@")), student[4], null, null, null, null, function () { });
+  }
   console.log("Preference Table Loaded!");
   callback();
 }
@@ -300,108 +303,6 @@ function createDatabase(callback) {
       callback();
     }
   );
-}
-
-const getAssignments = () => {
-  console.log("getAssignments()");
-  return new Promise((resolve, reject) => {
-    databaseConnection.query(getAssignmentsQuery(), (err, result) => {
-      if (err) reject(err);
-      else {
-        console.log("Assignments Retrieved!");
-        resolve(result);
-      }
-    });
-  });
-};
-
-const getStudentDataForWrite = (studentID) => {
-  console.log("getStudentDataForWrite()");
-  return new Promise((resolve, reject) => {
-    databaseConnection.query(
-      getStudentDataForWriteQuery(studentID),
-      (err, result) => {
-        if (err) {
-          console.log("Error!");
-          reject(err);
-        } else {
-          console.log("Student Data Retrieved!");
-          resolve(result);
-        }
-      }
-    );
-  });
-};
-
-const getComment = (studentID, projectID) => {
-  console.log("getComment()");
-  return new Promise((resolve, reject) => {
-    databaseConnection.query(
-      getCommentQuery(studentID, projectID),
-      (err, result) => {
-        if (err) reject(err);
-        else {
-          console.log("Comment Retrieved!");
-          resolve(result);
-        }
-      }
-    );
-  });
-};
-
-// I'm assuming the other CSVs don't need to be written to, but they can be added later if they do.
-async function writeAssignmentsCSV(callback) {
-  console.log("writeAssignmentsCSV()");
-  const csvWriter = createCsvWriter({
-    path: "tempStudentAssignments.csv",
-    header: [
-      { id: "major", title: "Major" },
-      { id: "projectID", title: "ProjectID" },
-      { id: "timeA", title: "TimeA" },
-      { id: "timeB", title: "TimeB" },
-      { id: "timeC", title: "TimeC" },
-      { id: "comment", title: "Comments" },
-      { id: "nda", title: "Student_NDA" },
-      { id: "ip", title: "Student_IP" },
-      { id: "studentID", title: "campus_id" },
-      { id: "lastName", title: "last_name" },
-      { id: "firstName", title: "first_name" },
-      { id: "onCampus", title: "OnCampus" },
-    ],
-  });
-
-  let data = [];
-  let assignments = await getAssignments();
-  for (const assignment of assignments) {
-    let row = {};
-    row["studentID"] = assignment.student_id;
-    row["projectID"] = assignment.project_id;
-
-    console.log(assignment.student_id);
-    const studentList = await getStudentDataForWrite(assignment.student_id);
-    student = studentList[0];
-
-    row["firstName"] = student.first_name;
-    row["lastName"] = student.last_name;
-    row["major"] = student.major;
-    row["nda"] = student.nda;
-    row["ip"] = student.ip;
-    row["onCampus"] = student.on_campus == 1 ? "Yes" : "No";
-
-    const commentList = await getComment(
-      assignment.student_id,
-      assignment.project_id
-    );
-
-    const comment = commentList[0];
-    row["comment"] = comment.comment;
-
-    data.push(row);
-  }
-
-  await csvWriter.writeRecords(data);
-  console.log("CSV Written!");
-  exit(0);
 }
 
 // Main code.
