@@ -1,14 +1,13 @@
 const cors = require("cors");
 const express = require("express");
 const SQL = require("sql-template-strings");
-
+const writeCSV = require("./csvWrite.js");
 const app = express();
 const corsOptions = {
   origin: "http://localhost:8081",
 };
 
 console.log("Server is runbning");
-
 const {
   addAssignment,
   addPreference,
@@ -137,7 +136,13 @@ app.get("/api/student-assignments", async (req, res) => {
         .status(401)
         .json({ message: `Error occurred when querying database: ${error}` });
     }
-    console.log("Student Assignments Recieved!");
+    console.log("Student Assignments Received!");
     res.json(result);
+  });
+});
+
+app.post("/api/write", async (req, res) => {
+  writeCSV.writeAssignmentsCSV(() => {
+    res.status(200).json("OK");
   });
 });
