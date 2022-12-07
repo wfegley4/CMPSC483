@@ -31,7 +31,6 @@ const SummaryBoxStudents = ({ item }) => {
                     <div className="summary-box__info__title">
                         <div>{item.title}</div>
                         <span>{item.subtitle}</span>
-                        <span>{item.subtitle}</span>
 
                     </div>
                     <div className="summary-box__info__value">
@@ -40,11 +39,11 @@ const SummaryBoxStudents = ({ item }) => {
                 </div>
                 <div className="summary-box__info">
                     <div className="summary-box__info__title">
-                        <span>{item.title}</span>
+                        <title>{item.title}</title>
                         <span>{item.subtitle}</span>
                     </div>
                     <div className="summary-box__info__value">
-                        {item.value}
+                        {item.percent}
                     </div>
                 </div>
                 <div className='summary-box__open'>

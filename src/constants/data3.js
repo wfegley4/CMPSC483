@@ -4,85 +4,96 @@ const data3 = {
     summary: [
         {
             title: 'LF3',
-            subtitle: 'Completion Progress',
-            people: '2',
+            subtitle: 'Compan',
+            value: '2',
             percent: 30
         },
         {
-            title: 'Completed Groups',
-            subtitle: 'Number of Groups',
+            title: 'LF3',
+            subtitle: 'Company',
             value: '20',
             percent: 30
         },
         {
-            title: 'Completed Students',
-            subtitle: 'Students List',
+            title: 'LF3',
+            subtitle: 'Company',
             value: '200',
             percent: 40
         },
         {
-            title: 'Incompleted Students',
-            subtitle: 'Students List',
-            value: '300',
-            percent: 60
+            title: 'LF3',
+            subtitle: 'Compan',
+            value: '2',
+            percent: 30
         },
         {
-            title: 'Incompleted Students',
-            subtitle: 'Students List',
-            value: '300',
-            percent: 60
-        },
-        {
-            title: 'Incompleted Students',
-            subtitle: 'Students List',
-            value: '300',
-            percent: 60
-        },
-        {
-            title: 'Incompleted Students',
-            subtitle: 'Students List',
-            value: '300',
-            percent: 60
-        },
-        {
-            title: 'Incompleted Students',
-            subtitle: 'Students List',
-            value: '300',
-            percent: 60
-        },
-        {
-            title: 'Incompleted Students',
-            subtitle: 'Students List',
-            value: '300',
-            percent: 60
-        }
-        
-        
-    ],
-    
-    overall: [
-        {
-            value: '500',
-            title: 'Total Students'
-        },
-        {
-            value: '300',
-            title: 'Incompleted Students'
-        },
-        {
+            title: 'LF3',
+            subtitle: 'Company',
             value: '20',
-            title: 'Completed Groups'
+            percent: 30
         },
         {
-            value: '35',
-            title: 'Incompleted Groups'
-        }
-    ],
+            title: 'LF3',
+            subtitle: 'Company',
+            value: '200',
+            percent: 40
+        },
+        {
+            title: 'LF3',
+            subtitle: 'Compan',
+            value: '2',
+            percent: 30
+        },
+        {
+            title: 'LF3',
+            subtitle: 'Company',
+            value: '20',
+            percent: 30
+        },
+        {
+            title: 'LF3',
+            subtitle: 'Company',
+            value: '200',
+            percent: 40
+        },
+        {
+            title: 'LF3',
+            subtitle: 'Compan',
+            value: '2',
+            percent: 30
+        },
+        {
+            title: 'LF3',
+            subtitle: 'Company',
+            value: '20',
+            percent: 30
+        },
+        {
+            title: 'LF3',
+            subtitle: 'Company',
+            value: '200',
+            percent: 40
+        },
+        {
+            title: 'LF3',
+            subtitle: 'Compan',
+            value: '2',
+            percent: 30
+        },
+        {
+            title: 'LF3',
+            subtitle: 'Company',
+            value: '20',
+            percent: 30
+        },
+        {
+            title: 'LF3',
+            subtitle: 'Company',
+            value: '200',
+            percent: 40
+        },
+    ]
     
-    revenueByMonths: {
-        labels: ['Major1', 'Major2', 'Major3', 'Major4', 'Major5', 'Major6', 'Major7', 'Major8', 'Major9', 'Major10'],
-        data: [250, 200, 300, 280, 100, 220, 310, 190, 200, 120]
-    }
 }
 
 export default data3

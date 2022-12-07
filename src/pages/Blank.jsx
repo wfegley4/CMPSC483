@@ -3,7 +3,7 @@ import React from 'react'
 const Blank = () => {
     return (
         <div>
-            This is a blank page
+            This is a blank
         </div>
     )
 }
