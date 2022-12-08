@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Stats.css";
 import axios from "axios";
-
-const cities = [
-  { name: "Onclick", temperature: "50F" },
-  { name: "Onclick", temperature: "50F" },
-];
+import MaterialTable from "material-table";
 
 const http = axios.create({
   baseURL: "http://localhost:8081",
@@ -37,39 +33,50 @@ const Table = (props) => {
   );
 };
 
-const ProjectData = [
-  {
-    Project: "LF3",
-    Company: 19,
-    Course: "Feale",
-    Primary_Major: "CS",
-    Secondary_Major: "CS",
-    Tertiary_Major: "CS",
-    Count: 10,
-    Select: "btn",
-  },
+const projectColumns = [
+  { title: "Project ID", field: "id", hidden: true },
+  { title: "Project Name", field: "title", filtering: false },
+  { title: "Company", field: "company", filtering: false },
+  { title: "Count", field: "count" },
 ];
+
+const studentColumns = [
+  { title: "Student ID", field: "id", hidden: true },
+  { title: "Project ID", field: "project", hidden: true },
+  { title: "First Name", field: "first_name" },
+  { title: "Last Name", field: "last_name" },
+  { title: "Major", field: "major" },
+];
+
 const studentData = [
   {
-    Project: "LF3",
-    Company: 19,
-    Course: "Feale",
-    Primary_Major: "CS",
-    Secondary_Major: "CS",
-    Tertiary_Major: "CS",
-    Count: 10,
-    Select: "btn",
+    id: "AAF5294",
+    first_name: "Alexandra",
+    last_name: "Ferri",
+    major: "BME",
+    nda: 1,
+    ip: 1,
+    on_campus: 1,
+  },
+  {
+    id: "AAH5469",
+    first_name: "Agha",
+    last_name: "Hyder",
+    major: "CMPEN",
+    nda: 1,
+    ip: 1,
+    on_campus: 1,
   },
 ];
 const switchData = [];
 
 const Stats = () => {
-  const [rows, setRows] = useState(cities);
-  const [data, setData] = useState(ProjectData);
+  const [rows, setRows] = useState();
+  const [data, setData] = useState();
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(1);
-
-  console.log(data[0]);
+  const [selectedProject, setSelectedProject] = useState();
+  const [selectedStudent, setSelectedStudent] = useState();
 
   useEffect(() => {
     const func = async () => {
@@ -87,14 +94,18 @@ const Stats = () => {
   const minHandler = (value) => {
     setMin(parseInt(value));
   };
-
   const maxHandler = (value) => {
     setMax(parseInt(value));
+  };
+  const onRowClick = (e, clickedRow) => {
+    setSelectedProject(clickedRow);
   };
 
   return (
     <div>
-      <p>Select minimum and maximum team values (inclusive)</p>
+      <p>
+        <b>Select minimum and maximum team values (inclusive)</b>
+      </p>
       <lable>
         Min Value
         <select onChange={({ target: { value } }) => minHandler(value)}>
@@ -126,11 +137,60 @@ const Stats = () => {
           <option value="10">10</option>
         </select>
       </lable>
-      <div className="Stat">
-        <Table data={rows} />
-      </div>
       <div>
-        <table>
+        <MaterialTable
+          title="Projects Table"
+          data={data}
+          columns={projectColumns}
+          onRowClick={onRowClick}
+          options={{
+            filtering: true,
+            showSelectAllCheckbox: true,
+            showTextRowsSelected: true,
+            rowStyle: (row) =>
+              row?.id === selectedProject?.id ? { background: "#90EE90" } : {},
+          }}
+        />
+        {selectedProject && (
+          <div>
+            <p> &ensp;</p>
+            <h4>Project Selected: {selectedProject?.title}</h4>
+            <h5>
+              <b>Course:</b> {selectedProject?.course_name}
+            </h5>
+            <h5>Course Time: {selectedProject?.course_time}</h5>
+            <h5>
+              <b>Primary Major:</b>
+              {selectedProject?.primary_major}
+            </h5>
+            <h5>
+              <b>Secondary Major:</b> {selectedProject?.secondary_major}
+            </h5>
+            <h5>
+              <b>Tertiary Majors:</b> {selectedProject?.tertiary_majors}
+            </h5>
+            <h5>
+              NDA: {selectedProject?.confidentiality} IP:
+              {selectedProject?.ip}
+            </h5>
+            <MaterialTable
+              title="Students In Project"
+              data={studentData}
+              columns={studentColumns}
+              // onRowClick={}
+              options={{
+                filtering: true,
+                showSelectAllCheckbox: true,
+                showTextRowsSelected: true,
+                rowStyle: (row) =>
+                  row?.id === selectedStudent?.id
+                    ? { background: "#90EE90" }
+                    : {},
+              }}
+            />
+          </div>
+        )}
+        {/* <table>
           <thead>
             <tr>
               {Object.keys(data[0])
@@ -160,30 +220,8 @@ const Stats = () => {
               })
             )}
           </tbody>
-        </table>
+        </table> */}
         <p>Space</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Student Name</th>
-              <th>Major</th>
-              <th>Ip/config</th>
-              <th>Preference</th>
-            </tr>
-          </thead>
-          <tbody>
-            {studentData.map((project) => {
-              Object.keys(project).map((key) => {
-                return (
-                  //If studentData is empty, display message: "Select a Project!"
-                  <tr key={key}>
-                    <td>{project[key]}</td>
-                  </tr>
-                );
-              });
-            })}
-          </tbody>
-        </table>
         <p>""</p>
 
         <table>

@@ -79,7 +79,12 @@ app.get("/api/projects", async (req, res) => {
 });
 
 app.get("/api/students", async (req, res) => {
-  const query = SQL`SELECT * from students`;
+  const query = SQL`SELECT s.first_name, s.last_name, s.major, 
+  s.nda, s.ip, s.on_campus,
+  a.project_id
+FROM assignments AS a
+INNER JOIN students AS s
+ON a.student_id = s.id`;
   databaseConnection.execute(query, (error, result) => {
     if (error) {
       res
@@ -107,6 +112,7 @@ app.put("/api/students/:id", async (req, res) => {
     res.json(result);
   });
 });
+
 app.get("/api/dashboard-major", async (req, res) => {
   const query = SQL`SELECT
                         s.major, COUNT(*) AS count

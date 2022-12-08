@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import Box from "../components/box/Box";
@@ -72,6 +72,9 @@ const Dashboard = () => {
     },
   });
 
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(7);
+
   React.useEffect(() => {
     const func = async () => {
       try {
@@ -89,8 +92,6 @@ const Dashboard = () => {
         });
 
         const projectList = await http.get("/api/projects");
-        const MAX = 5;
-        const MIN = 3;
 
         const studentList = await http.get("/api/student-assignments");
         console.log(studentList.data);
@@ -117,12 +118,12 @@ const Dashboard = () => {
               if (info.title === "Completed Teams") {
                 info.value = `${
                   projectList.data.filter(
-                    (project) => project.count > MAX || project.count < MIN
+                    (project) => project.count >= max || project.count <= min
                   ).length
                 } out of ${projectList.data.length} incomplete`;
                 info.percent = `${Math.floor(
                   (projectList.data.filter(
-                    (project) => project.count <= MAX && project.count >= MIN
+                    (project) => project.count <= max && project.count >= min
                   ).length /
                     projectList.data.length) *
                     100
@@ -139,7 +140,7 @@ const Dashboard = () => {
     };
 
     func();
-  }, []);
+  }, [min, max]);
 
   return (
     <DashboardWrapper>

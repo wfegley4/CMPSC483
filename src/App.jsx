@@ -5,7 +5,7 @@ import Blank from "./pages/Blank";
 import Dashboard from "./pages/Dashboard";
 import Group from "./pages/Group";
 import Students from "./pages/Students";
-import Stats from "./pages/Stats";
+import Stats from "./pages/Stats copy";
 import Export from "./pages/Export";
 
 import MainLayout from "./layout/MainLayout";

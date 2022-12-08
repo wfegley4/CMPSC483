@@ -43,7 +43,9 @@ const Export = () => {
         idleText="Export Files"
         size="large"
         onClick={async (button) => {
+          alert("This takes a few seconds, click OK to continue");
           const writeResult = await http.post("/api/write");
+
           if (writeResult.status == 200) {
             alert("CSV Written");
           } else {
