@@ -79,26 +79,7 @@ const studentColumns = [
   { title: "Major", field: "major" },
 ];
 
-const studentList = [
-  {
-    id: "AAF5294",
-    first_name: "Alexandra",
-    last_name: "Ferri",
-    major: "BME",
-    nda: 1,
-    ip: 1,
-    on_campus: 1,
-  },
-  {
-    id: "AAH5469",
-    first_name: "Agha",
-    last_name: "Hyder",
-    major: "CMPEN",
-    nda: 1,
-    ip: 1,
-    on_campus: 1,
-  },
-];
+const studentList = [];
 const switchColumns = [
   { title: "Project ID", field: "id", hidden: true },
   { title: "Project Name", field: "title", filtering: false },

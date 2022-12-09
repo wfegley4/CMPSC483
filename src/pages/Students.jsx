@@ -9,6 +9,7 @@ import SummaryBox, {
 import { colors, data3 } from "../constants";
 import axios from "axios";
 import MaterialTable from "material-table";
+import ReactiveButton from "reactive-button";
 
 const http = axios.create({
   baseURL: "http://localhost:8081",
@@ -167,6 +168,15 @@ const Students = () => {
               row?.id === selectedStudent?.id ? { background: "#90ee90" } : {},
           }}
           onRowClick={onStudentClick}
+        />
+        <ReactiveButton
+          rounded
+          color="Primary"
+          idleText="Swap Student"
+          size="large"
+          onButtonClick={async () => {
+            console.log(selectedStudent?.id);
+          }}
         />
       </div>
     </div>
