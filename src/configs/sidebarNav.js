@@ -5,12 +5,12 @@ const sidebarNav = [
         icon: <i className='bx bx-home-alt'></i>,
         text: 'Home'
     },
-    {
-        link: '/Group',
-        section: 'Group',
-        icon: <i className='bx bx-user' ></i>,
-        text: 'Group'
-    },
+    // {
+    //     link: '/Group',
+    //     section: 'Group',
+    //     icon: <i className='bx bx-user' ></i>,
+    //     text: 'Group'
+    // },
 
     {
         link: '/Students',
@@ -19,10 +19,10 @@ const sidebarNav = [
         text: 'Students'
     },
     {
-        link: '/stats',
-        section: 'stats',
+        link: '/Teams',
+        section: 'teams',
         icon: <i className='bx bx-line-chart'></i>,
-        text: 'Stats'
+        text: 'Teams'
     },
     {
         link: '/Export',
