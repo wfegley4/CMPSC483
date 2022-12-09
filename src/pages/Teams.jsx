@@ -189,7 +189,7 @@ const Teams = () => {
   useEffect(() => {
     const func = async (selectedProject) => {
       const studentList = await http.get("/api/students");
-      // console.log(selectedProject.id);
+      console.log(selectedProject.id);
       setStudentData(
         studentList.data.filter(
           (student) => student.project_id === selectedProject.id
