@@ -105,46 +105,33 @@ const projInitial = [
   },
 ];
 
-// const studInitial = [
-//   {
-//     id: "AAA5894",
-//     first_name: "Abdullah",
-//     last_name: "Almotawa",
-//     major: "ME",
-//     nda: 1,
-//     ip: 1,
-//     on_campus: 0,
-//     project_id: "ca7b8a48-3bc3-4",
-//   },
-// ];
-
 const Students = () => {
-  // const [studentData, setStudentData] = useState(studInitial);
+  const [studentData, setStudentData] = useState();
   const [projectData, setProjectData] = useState(projInitial);
-  // const [selectedStudent, setSelectedStudent] = useState();
+  const [selectedStudent, setSelectedStudent] = useState();
   const [selectedProject, setSelectedProject] = useState();
 
-  // useEffect(() => {
-  //   const func = async () => {
-  //     const projectList = await http.get("/api/projects");
-  //     setProjectData(projectList.data);
-  //   };
-  //   func();
-  // }, []);
+  useEffect(() => {
+    const func = async () => {
+      const projectList = await http.get("/api/projects");
+      setProjectData(projectList.data);
+    };
+    func();
+  }, []);
 
-  // useEffect(() => {
-  //   const func = async () => {
-  //     const studentList = await http.get("/api/students");
-  //     setStudentData(
-  //       studentList.data.filter((student) => student.project_id === null)
-  //     );
-  //   };
-  //   func();
-  // }, []);
+  useEffect(() => {
+    const func = async () => {
+      const studentList = await http.get("/api/students");
+      setStudentData(
+        studentList.data.filter((student) => student.project_id === null)
+      );
+    };
+    func();
+  }, []);
 
-  // const onStudentClick = (e, clickedStudent) => {
-  //   setSelectedStudent(clickedStudent);
-  // };
+  const onStudentClick = (e, clickedStudent) => {
+    setSelectedStudent(clickedStudent);
+  };
   const onProjectClick = (e, clickedProject) => {
     setSelectedProject(clickedProject);
   };
@@ -161,11 +148,11 @@ const Students = () => {
             filtering: true,
             showSelectAllCheckbox: false,
             showTextRowsSelected: false,
-            // rowStyle: (row) =>
-            //   row?.id === selectedProject?.id ? { background: "#90EE90" } : {},
+            rowStyle: (row) =>
+              row?.id === selectedProject?.id ? { background: "#90EE90" } : {},
           }}
         />
-        {/* {selectedProject && (
+        {selectedProject && (
           <h4>Selected Employee Name : {selectedProject?.title}</h4>
         )}
         <MaterialTable
@@ -180,7 +167,7 @@ const Students = () => {
               row?.id === selectedStudent?.id ? { background: "#90ee90" } : {},
           }}
           onRowClick={onStudentClick}
-        /> */}
+        />
       </div>
     </div>
   );

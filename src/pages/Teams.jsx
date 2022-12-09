@@ -190,11 +190,11 @@ const Teams = () => {
     const func = async (selectedProject) => {
       const studentList = await http.get("/api/students");
       console.log(selectedProject);
-      // setStudentData(
-      //   studentList.data.filter(
-      //     (student) => student.project_id === selectedProject.id
-      //   )
-      // );
+      setStudentData(
+        studentList.data.filter(
+          (student) => student.project_id === selectedProject.id
+        )
+      );
     };
 
     func(selectedProject);
@@ -297,12 +297,6 @@ const Teams = () => {
                     color="Primary"
                     idleText="Swap Student"
                     size="large"
-                    onClick={async () => {
-                      const data = {};
-                      console.log(selectedStudent?.id);
-                      console.log(selectedSwitch?.id);
-                      const swapStudent = await http.putt("/api/switch/1", {});
-                    }}
                   />
                 )}
               </div>
