@@ -9,7 +9,6 @@ import SummaryBox, {
 import { colors, data3 } from "../constants";
 import axios from "axios";
 import MaterialTable from "material-table";
-import ReactiveButton from "reactive-button";
 
 const http = axios.create({
   baseURL: "http://localhost:8081",
@@ -87,33 +86,65 @@ const projectColumns = [
   },
 ];
 
+const projInitial = [
+  {
+    id: "02081040-8f70-4",
+    company: "Beehive Home Buyer",
+    title: "A Model for Residential Property Evaluation",
+    primary_major: "DS",
+    secondary_major: "CMPSC",
+    tertiary_majors: "",
+    confidentiality: 0,
+    ip: 1,
+    course_time: "T R 8:00 am-9:55 am",
+    course_name: "DS 440.001",
+    prototype: 0,
+    count: 5,
+    primary_count: 5,
+    secondary_count: 0,
+  },
+];
+
+// const studInitial = [
+//   {
+//     id: "AAA5894",
+//     first_name: "Abdullah",
+//     last_name: "Almotawa",
+//     major: "ME",
+//     nda: 1,
+//     ip: 1,
+//     on_campus: 0,
+//     project_id: "ca7b8a48-3bc3-4",
+//   },
+// ];
+
 const Students = () => {
-  const [studentData, setStudentData] = useState();
-  const [projectData, setProjectData] = useState();
-  const [selectedStudent, setSelectedStudent] = useState();
+  // const [studentData, setStudentData] = useState(studInitial);
+  const [projectData, setProjectData] = useState(projInitial);
+  // const [selectedStudent, setSelectedStudent] = useState();
   const [selectedProject, setSelectedProject] = useState();
 
-  useEffect(() => {
-    const func = async () => {
-      const projectList = await http.get("/api/projects");
-      setProjectData(projectList.data);
-    };
-    func();
-  }, []);
+  // useEffect(() => {
+  //   const func = async () => {
+  //     const projectList = await http.get("/api/projects");
+  //     setProjectData(projectList.data);
+  //   };
+  //   func();
+  // }, []);
 
-  useEffect(() => {
-    const func = async () => {
-      const studentList = await http.get("/api/students");
-      setStudentData(
-        studentList.data.filter((student) => student.project_id === null)
-      );
-    };
-    func();
-  }, []);
+  // useEffect(() => {
+  //   const func = async () => {
+  //     const studentList = await http.get("/api/students");
+  //     setStudentData(
+  //       studentList.data.filter((student) => student.project_id === null)
+  //     );
+  //   };
+  //   func();
+  // }, []);
 
-  const onStudentClick = (e, clickedStudent) => {
-    setSelectedStudent(clickedStudent);
-  };
+  // const onStudentClick = (e, clickedStudent) => {
+  //   setSelectedStudent(clickedStudent);
+  // };
   const onProjectClick = (e, clickedProject) => {
     setSelectedProject(clickedProject);
   };
@@ -130,22 +161,13 @@ const Students = () => {
             filtering: true,
             showSelectAllCheckbox: false,
             showTextRowsSelected: false,
-            rowStyle: (row) =>
-              row?.id === selectedProject?.id ? { background: "#90EE90" } : {},
+            // rowStyle: (row) =>
+            //   row?.id === selectedProject?.id ? { background: "#90EE90" } : {},
           }}
         />
-        {selectedProject && (
+        {/* {selectedProject && (
           <h4>Selected Employee Name : {selectedProject?.title}</h4>
         )}
-        {/* //   options={{ */}
-        {/* //     //For multi select
-          //   selection: true,
-          //     // showSelectAllCheckbox: false,
-          //     // showTextRowsSelected: false,
-          //     rowStyle: (row) =>
-          //       row?.id === selectedRow?.id ? { background: "#e7e7e7" } : {},
-          //   }}
-          //   //   onSelectionChange={onSelectionChange} */}
         <MaterialTable
           title="Students Without Assignments"
           data={studentData}
@@ -158,7 +180,7 @@ const Students = () => {
               row?.id === selectedStudent?.id ? { background: "#90ee90" } : {},
           }}
           onRowClick={onStudentClick}
-        />
+        /> */}
       </div>
     </div>
   );

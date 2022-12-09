@@ -189,17 +189,16 @@ const Teams = () => {
   useEffect(() => {
     const func = async (selectedProject) => {
       const studentList = await http.get("/api/students");
-      console.log(selectedProject.id);
-      setStudentData(
-        studentList.data.filter(
-          (student) => student.project_id === selectedProject.id
-        )
-      );
+      console.log(selectedProject);
+      // setStudentData(
+      //   studentList.data.filter(
+      //     (student) => student.project_id === selectedProject.id
+      //   )
+      // );
     };
 
     func(selectedProject);
   }, [selectedProject]);
-
   const onRowClick = (e, clickedRow) => {
     setSelectedProject(clickedRow);
     console.log(selectedProject);
