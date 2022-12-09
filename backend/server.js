@@ -8,7 +8,8 @@ const corsOptions = {
   origin: "http://localhost:8081",
 };
 
-console.log("Server is runbning");
+console.log("Server is running");
+
 const {
   addAssignment,
   addPreference,
