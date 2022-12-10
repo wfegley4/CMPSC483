@@ -1,12 +1,11 @@
 const cors = require("cors");
 const { application } = require("express");
 const express = require("express");
+const bodyParser = require("body-parser");
 const SQL = require("sql-template-strings");
 const writeCSV = require("./csvWrite.js");
 const app = express();
-const corsOptions = {
-  origin: "http://localhost:8081",
-};
+const corsOptions = {};
 
 console.log("Server is running");
 
@@ -22,7 +21,8 @@ const {
 } = require("./db.js");
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
@@ -170,24 +170,14 @@ app.get("/api/student-preferences/:id", async (req, res) => {
 });
 
 app.put("/api/write", async (req, res) => {
+  console.log("hello");
   writeCSV.writeAssignmentsCSV(() => {
     res.status(200).json("OK");
   });
 });
 
-app.put("/api/switch/1", async (req, res) => {
-  const params = [req.body["projectID"], req.body["studentID"]];
-  writeCSV.writeAssignmentsCSV(() => {
-    res.status(200).json("OK");
-  });
-  // const query = SQL`UPDATE assigments
-  // SET project_id = ?
-  // WHERE student_id = ?`;
-  // databaseConnection.execute(query, params, (error, result) => {
-  //   if (error) {
-  //     res.status(401).json({ message: `Error swapping students: ${error}` });
-  //   }
-  //   console.log("Student Assignments Updated!");
-  //   res.json(result);
-  // });
+app.put("/api/switch/", async (req, res) => {
+  console.log(req.body);
+  // const params = req.body;
+  // console.log(params);
 });

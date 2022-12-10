@@ -174,8 +174,12 @@ const Students = () => {
           color="Primary"
           idleText="Swap Student"
           size="large"
-          onButtonClick={async () => {
-            console.log(selectedStudent?.id);
+          onClick={async () => {
+            console.log("hello");
+            const writeResult = await http.put("/api/switch/", {
+              projectID: selectedProject.id,
+              studentID: selectedStudent.id,
+            });
           }}
         />
       </div>

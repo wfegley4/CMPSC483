@@ -44,7 +44,7 @@ const Export = () => {
         size="large"
         onClick={async (button) => {
           alert("This takes a few seconds, click OK to continue");
-          const writeResult = await http.post("/api/write");
+          const writeResult = await http.put("/api/write", { title: "hello" });
 
           if (writeResult.status == 200) {
             alert("CSV Written");
