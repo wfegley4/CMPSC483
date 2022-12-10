@@ -22,7 +22,7 @@ const { exit } = require("process");
 
 const preferencesCSV = "studentsFinal.csv";
 const projectsCSV = "projectsFinal.csv";
-const studentsCSV = "studentAssignments.csv";
+const studentsCSV = "tempStudentAssignments.csv";
 const studentsNoSurveyCSV = "Students Without Prefs.csv";
 
 const majors = [
@@ -41,16 +41,21 @@ const majors = [
 
 async function loadAssignmentsTable(callback) {
   console.log("loadAssigmentsTable()");
+  let assignedStudents = []
   for (const student of students) {
     //  studentid,projectid,
+    assignedStudents.push(student[8])
     await addAssignment(student[8], student[1], function () {});
   }
   for (const student of studentsNoSurvey) {
-    await addAssignment(
-      student[2].substring(0, student[2].indexOf("@")),
-      null,
-      function () {}
-    );
+    if(!assignedStudents.includes(student[2].substring(0, student[2].indexOf("@"))))
+    {
+      await addAssignment(
+        student[2].substring(0, student[2].indexOf("@")),
+        null,
+        function () {}
+      );
+    }
   }
   callback();
 }

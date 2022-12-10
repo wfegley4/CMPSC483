@@ -51,26 +51,34 @@ async function writeAssignmentsCSV(callback) {
     row["ip"] = student.ip;
     row["onCampus"] = student.on_campus == 1 ? "Yes" : "No";
 
-    console.log(assignment.project_id);
-    if (assignment.project_id !== null) {
+    if (assignment.project_id !== null && assignment.project_id !== "&nbsp;") {
       row["projectID"] = assignment.project_id;
+
       let preference = await getPreferenceDataForWrite(
         assignment.student_id,
         assignment.project_id
       );
       preference = preference[0];
-      row["comment"] = preference.comment;
       row["timeA"] = preference.time_a;
-      row["timeB"] = preference.time_b;
-      row["timeC"] = preference.time_c;
-    } else {
+      if (preference.comment !== undefined) {
+        row["comment"] = preference.comment;
+        row["timeB"] = preference.time_b;
+        row["timeC"] = preference.time_c;
+      }
+      else {
+        row["comment"] = "&nbsp;";
+        row["timeB"] = "&nbsp;";
+        row["timeC"] = "&nbsp;";
+      }
+    }
+    else {
       row["projectID"] = "&nbsp;";
-      const preferenceList = await getNoSurveyTimeForWrite(
+      const preference = await getNoSurveyTimeForWrite(
         assignment.student_id
       );
-      if (preferenceList.length !== 0) {
+      if (preference.length !== 0) {
         row["comment"] = "&nbsp;";
-        row["timeA"] = preferenceList[0].time_a;
+        row["timeA"] = preference[0].time_a;
         row["timeB"] = "&nbsp;";
         row["timeC"] = "&nbsp;";
       }
