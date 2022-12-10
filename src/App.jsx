@@ -17,9 +17,9 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="Home" element={<Blank />} />
-          <Route path="Groups" element={<Group />} />
+          {/* <Route path="Group" element={<Group />} /> */}
           <Route path="Students" element={<Students />} />
-          <Route path="Stats" element={<Teams />} />
+          <Route path="Teams" element={<Teams />} />
           <Route path="Export" element={<Export />} />
         </Route>
       </Routes>

@@ -75,6 +75,13 @@ const Dashboard = () => {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(7);
 
+  const minHandler = (value) => {
+    setMin(parseInt(value));
+  };
+  const maxHandler = (value) => {
+    setMax(parseInt(value));
+  };
+
   React.useEffect(() => {
     const func = async () => {
       try {
@@ -145,6 +152,40 @@ const Dashboard = () => {
   return (
     <DashboardWrapper>
       <DashboardWrapperMain>
+      <p>
+        <b>Select minimum and maximum team values (inclusive)</b>
+      </p>
+      <lable>
+        Min Value
+        <select onChange={({ target: { value } }) => minHandler(value)}>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </lable>
+      <lable>
+        Max Value
+        <select onChange={({ target: { value } }) => maxHandler(value)}>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </lable>
         <div className="row">
           <div className="col-12 col-md-12">
             <div className="row">
