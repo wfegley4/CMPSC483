@@ -70,7 +70,7 @@ async function writeAssignmentsCSV(callback) {
       );
       if (preferenceList.length !== 0) {
         row["comment"] = "&nbsp;";
-        row["timeA"] = preference[0].time_a;
+        row["timeA"] = preferenceList[0].time_a;
         row["timeB"] = "&nbsp;";
         row["timeC"] = "&nbsp;";
       }
