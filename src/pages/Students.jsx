@@ -180,6 +180,11 @@ const Students = () => {
               projectID: selectedProject.id,
               studentID: selectedStudent.id,
             });
+            if (writeResult.status == 200) {
+              alert("CSV Written");
+            } else {
+              alert("Failed to write CSV");
+            }
           }}
         />
       </div>

@@ -278,6 +278,18 @@ const Teams = () => {
                     color="Primary"
                     idleText="Swap Student"
                     size="large"
+                    onClick={async () => {
+                      console.log("hello");
+                      const writeResult = await http.put("/api/switch/", {
+                        projectID: selectedProject.id,
+                        studentID: selectedStudent.id,
+                      });
+                      if (writeResult.status == 200) {
+                        alert("CSV Written");
+                      } else {
+                        alert("Failed to write CSV");
+                      }
+                    }}
                   />
                 )}
               </div>
