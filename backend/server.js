@@ -178,6 +178,20 @@ app.put("/api/write", async (req, res) => {
 
 app.put("/api/switch/", async (req, res) => {
   console.log(req.body);
-  // const params = req.body;
-  // console.log(params);
+  const studentID = req.body.studentID;
+  const projectID = req.body.projectID;
+  const query = SQL`UPDATE assignments 
+  SET project_id = ${projectID} 
+  WHERE student_id = ${studentID}`;
+  databaseConnection.execute(query, (error, result) => {
+    if (error) {
+      console.log(error);
+      res.status(401).json({
+        message: `Error occurred when swapping student database: ${error}`,
+      });
+    } else {
+      console.log("Student Swapped!");
+      res.status(200).json("OK");
+    }
+  });
 });
