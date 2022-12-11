@@ -182,6 +182,7 @@ app.put("/api/switch/", async (req, res) => {
   const query = SQL`UPDATE assignments 
   SET project_id = ${projectID} 
   WHERE student_id = ${studentID}`;
+
   databaseConnection.execute(query, (error, result) => {
     if (error) {
       console.log(error);

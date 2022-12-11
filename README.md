@@ -22,10 +22,10 @@ If you're on MacOS, you can download the mySQL workbench from https://dev.mysql.
 <img width="422" alt="image" src="https://user-images.githubusercontent.com/77926643/194167178-540ef447-f4ad-4053-bd34-8c38d7524f96.png">
 
 3. Navigate to the /backend folder. Add the following .csv files, named exactly as shown below. (Eventually, there would be an easier way to add .csv files.) These files contain our csv data. 
-- projectsFinal.csv
-- studentAssignments.csv
-- Students Without Prefs.csv
-- studentsFinal.csv
+- **projectsFinal.csv** - project data
+- **studentAssignments.csv** - Student data, project data, and student comments
+- **Students Without Prefs.csv** - Data of students that did not fill out the the preferences survey
+- **studentsFinal.csv** - Student preference Data (for survey responders only)
 
 4. In the backend folder, create a .env file with the following content. These environment variables will be used to configure your mySQL database.
 `USERNAME=your MySQL Username` 
