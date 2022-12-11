@@ -51,33 +51,39 @@ async function writeAssignmentsCSV(callback) {
     row["ip"] = student.ip;
     row["onCampus"] = student.on_campus == 1 ? "Yes" : "No";
 
-    if (assignment.project_id !== null && assignment.project_id !== "&nbsp;") {
+    if(assignment.project_id !== null && assignment.project_id !== "&nbsp;") {
       row["projectID"] = assignment.project_id;
+    }
+    else {
+      row["projectID"] = "&nbsp;"
+    }
 
-      let preference = await getPreferenceDataForWrite(
-        assignment.student_id,
-        assignment.project_id
-      );
-      preference = preference[0];
-      row["timeA"] = preference.time_a;
-      if (preference.comment !== undefined) {
-        row["comment"] = preference.comment;
-        row["timeB"] = preference.time_b;
-        row["timeC"] = preference.time_c;
-      } else {
-        row["comment"] = "&nbsp;";
-        row["timeB"] = "&nbsp;";
-        row["timeC"] = "&nbsp;";
+    const timeA = await getNoSurveyTimeForWrite(assignment.student_id);
+    if (timeA.length > 1 && assignment.project_id !== null && assignment.project_id !== "&nbsp;") {
+      console.log(assignment.project_id)
+        row["projectID"] = assignment.project_id;
+  
+        let preference = await getPreferenceDataForWrite(
+          assignment.student_id,
+          assignment.project_id
+        );
+        preference = preference[0];
+        row["timeA"] = preference.time_a;
+        if (preference.comment !== undefined) {
+          row["comment"] = preference.comment;
+          row["timeB"] = preference.time_b;
+          row["timeC"] = preference.time_c;
+        } else {
+          row["comment"] = "&nbsp;";
+          row["timeB"] = "&nbsp;";
+          row["timeC"] = "&nbsp;";
+        }
       }
-    } else {
-      row["projectID"] = "&nbsp;";
-      const preference = await getNoSurveyTimeForWrite(assignment.student_id);
-      if (preference.length !== 0) {
-        row["comment"] = "&nbsp;";
-        row["timeA"] = preference[0].time_a;
-        row["timeB"] = "&nbsp;";
-        row["timeC"] = "&nbsp;";
-      }
+    else if (timeA.length == 1) {
+      row["comment"] = "&nbsp;";
+      row["timeA"] = timeA[0].time_a;
+      row["timeB"] = "&nbsp;";
+      row["timeC"] = "&nbsp;";
     }
     data.push(row);
   }
