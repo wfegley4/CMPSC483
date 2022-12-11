@@ -280,14 +280,14 @@ const Teams = () => {
                     size="large"
                     onClick={async () => {
                       console.log("hello");
-                      const writeResult = await http.put("/api/switch/", {
+                      const swapStudent = await http.put("/api/switch/", {
                         projectID: selectedProject.id,
                         studentID: selectedStudent.id,
                       });
-                      if (writeResult.status == 200) {
-                        alert("CSV Written");
+                      if (swapStudent.status == 200) {
+                        alert("Student Swapped!");
                       } else {
-                        alert("Failed to write CSV");
+                        alert("Unsuccessful swap :(");
                       }
                     }}
                   />

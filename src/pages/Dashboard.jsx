@@ -73,7 +73,7 @@ const Dashboard = () => {
   });
 
   const [min, setMin] = useState(0);
-  const [max, setMax] = useState(7);
+  const [max, setMax] = useState(1);
 
   const minHandler = (value) => {
     setMin(parseInt(value));
@@ -110,12 +110,12 @@ const Dashboard = () => {
                 info.value = `${
                   studentList.data.length -
                   studentList.data.filter(
-                    (student) => student.project_id != null
+                    (student) => student.project_id != "&nbsp;"
                   ).length
                 } out of ${studentList.data.length} incomplete`;
                 info.percent = `${Math.floor(
                   (studentList.data.filter(
-                    (student) => student.project_id != null
+                    (student) => student.project_id != "&nbsp;"
                   ).length /
                     studentList.data.length) *
                     100
@@ -125,7 +125,7 @@ const Dashboard = () => {
               if (info.title === "Completed Teams") {
                 info.value = `${
                   projectList.data.filter(
-                    (project) => project.count >= max || project.count <= min
+                    (project) => project.count > max || project.count < min
                   ).length
                 } out of ${projectList.data.length} incomplete`;
                 info.percent = `${Math.floor(
@@ -152,40 +152,40 @@ const Dashboard = () => {
   return (
     <DashboardWrapper>
       <DashboardWrapperMain>
-      <p>
-        <b>Select minimum and maximum team values (inclusive)</b>
-      </p>
-      <lable>
-        Min Value
-        <select onChange={({ target: { value } }) => minHandler(value)}>
-          <option value="0">0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </lable>
-      <lable>
-        Max Value
-        <select onChange={({ target: { value } }) => maxHandler(value)}>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </lable>
+        <p>
+          <b>Select minimum and maximum team values (inclusive)</b>
+        </p>
+        <lable>
+          Min Value
+          <select onChange={({ target: { value } }) => minHandler(value)}>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </lable>
+        <lable>
+          Max Value
+          <select onChange={({ target: { value } }) => maxHandler(value)}>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </lable>
         <div className="row">
           <div className="col-12 col-md-12">
             <div className="row">

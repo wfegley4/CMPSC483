@@ -3,7 +3,6 @@ import "./scss/App.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Blank from "./pages/Blank";
 import Dashboard from "./pages/Dashboard";
-import Group from "./pages/Group";
 import Students from "./pages/Students";
 import Teams from "./pages/Teams";
 import Export from "./pages/Export";

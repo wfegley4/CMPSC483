@@ -112,22 +112,21 @@ const Students = () => {
   const [selectedStudent, setSelectedStudent] = useState();
   const [selectedProject, setSelectedProject] = useState();
 
-  useEffect(() => {
-    const func = async () => {
-      const projectList = await http.get("/api/projects");
-      setProjectData(projectList.data);
-    };
-    func();
-  }, []);
+  const loadTeams = async () => {
+    const projectList = await http.get("/api/projects");
+    setProjectData(projectList.data);
+  };
+
+  const loadStudents = async () => {
+    const studentList = await http.get("/api/students");
+    setStudentData(
+      studentList.data.filter((student) => student.project_id === "&nbsp;")
+    );
+  };
 
   useEffect(() => {
-    const func = async () => {
-      const studentList = await http.get("/api/students");
-      setStudentData(
-        studentList.data.filter((student) => student.project_id === null)
-      );
-    };
-    func();
+    loadStudents();
+    loadTeams();
   }, []);
 
   const onStudentClick = (e, clickedStudent) => {
@@ -153,9 +152,7 @@ const Students = () => {
               row?.id === selectedProject?.id ? { background: "#90EE90" } : {},
           }}
         />
-        {selectedProject && (
-          <h4>Selected Employee Name : {selectedProject?.title}</h4>
-        )}
+        {selectedProject && <h4>Selected Project: {selectedProject?.title}</h4>}
         <MaterialTable
           title="Students Without Assignments"
           data={studentData}
@@ -176,14 +173,15 @@ const Students = () => {
           size="large"
           onClick={async () => {
             console.log("hello");
-            const writeResult = await http.put("/api/switch/", {
+            const swapStudent = await http.put("/api/switch/", {
               projectID: selectedProject.id,
               studentID: selectedStudent.id,
             });
-            if (writeResult.status == 200) {
-              alert("CSV Written");
+            if (swapStudent.status == 200) {
+              alert("Student Successfully Swapped!");
+              loadStudents();
             } else {
-              alert("Failed to write CSV");
+              alert("Unsuccessful Swap :(");
             }
           }}
         />
