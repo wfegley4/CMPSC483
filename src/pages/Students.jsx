@@ -120,7 +120,10 @@ const Students = () => {
   const loadStudents = async () => {
     const studentList = await http.get("/api/students");
     setStudentData(
-      studentList.data.filter((student) => student.project_id === "&nbsp;")
+      studentList.data.filter(
+        (student) =>
+          student.project_id === "&nbsp;" || student.project_id === null
+      )
     );
   };
 

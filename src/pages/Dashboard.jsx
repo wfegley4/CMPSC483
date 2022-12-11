@@ -110,12 +110,16 @@ const Dashboard = () => {
                 info.value = `${
                   studentList.data.length -
                   studentList.data.filter(
-                    (student) => student.project_id != "&nbsp;"
+                    (student) =>
+                      student.project_id != "&nbsp;" &&
+                      student.project_id != null
                   ).length
                 } out of ${studentList.data.length} incomplete`;
                 info.percent = `${Math.floor(
                   (studentList.data.filter(
-                    (student) => student.project_id != "&nbsp;"
+                    (student) =>
+                      student.project_id != "&nbsp;" &&
+                      student.project_id != null
                   ).length /
                     studentList.data.length) *
                     100
