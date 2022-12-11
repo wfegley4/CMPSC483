@@ -14,39 +14,40 @@ If you're on MacOS, you can download the mySQL workbench from https://dev.mysql.
 
 ## Project Setup
 
-1. **(Git)** pull the repository https://github.com/jiwoongjeon/CMPSC483
+1. **(Git) pull the repository** https://github.com/jiwoongjeon/CMPSC483
 <img width="370" alt="image" src="https://user-images.githubusercontent.com/77926643/194166082-51357446-e298-42b4-9aff-d055d1bf026e.png">
 
-2. **(Terminal)** At the directory, cd until you see the pacakge.json, and at the directory, run `npm install`
+2. **(Terminal) At the directory, cd until you see the pacakge.json, and at the directory, run** `npm install`
 <img width="422" alt="image" src="https://user-images.githubusercontent.com/77926643/194167178-540ef447-f4ad-4053-bd34-8c38d7524f96.png">
 
-3. Navigate to the /backend folder. Add the following .csv files, named exactly as shown below. (Eventually, there would be an easier way to add .csv files.) These files contain our csv data. 
+3. **Navigate to the /backend folder. Add the following .csv files, named exactly as shown below. (Eventually, there would be an easier way to add .csv files.) These files contain our csv data.** 
 - projectsFinal.csv
 - studentAssignments.csv
 - Students Without Prefs.csv
 - studentsFinal.csv
 
-4. In the backend folder, create a .env file with the following content. These environment variables will be used to configure your mySQL database.
+4. **In the backend folder, create a .env file with the following content. These environment variables will be used to configure your mySQL database.**
 `USER_NAME=your MySQL Username` 
 `PASSWORD= your database password`
 `DATABASE_NAME= capstone`
 ![image](https://user-images.githubusercontent.com/74104735/206932011-4e141711-b11f-41bd-be42-d74df11a852b.png)
 
-5. **(Terminal)** Navigate to /backend folder and run `node builddb.js` 
+5. **(Terminal) Navigate to /backend folder and run** `node builddb.js` 
 - This command only needs to be run when the database needs to be build or rebuilt. 
 - If you use this to rebuild, you'll need to go into mySQL and drop the schema so that it doesn't create duplicate entries. (Further development needed so that it does not create duplicates.)
 - If it fails the first time, run the command again. For some reason, it needs to be run twice
 - You should see a stream of output with messages as the queries are executed.
 
-6. In the same directory, run `node server.js` to start the server.
+6. **In the same directory, run `node server.js` to start the server.**
 - You should see:
 `Server is running`
 `Connected to MySQL!`
 `Listening on 8081 `
-7. In a new and separate terminal (keep the server one running), navigate back to the home directory and run `npm start` to start the site. 
+
+7. **In a new and separate terminal (keep the server one running), navigate back to the home directory and run** `npm start` **to start the site.** 
 - A web browser should pop up at "localhost:3000"
 
-8.  run the program by `npm start`
+8.  **Run the program by** `npm start`
 
 ### Summary
 You should have two terminals open. One with `node server.js` and `npm start`
