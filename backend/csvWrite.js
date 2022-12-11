@@ -64,18 +64,14 @@ async function writeAssignmentsCSV(callback) {
         row["comment"] = preference.comment;
         row["timeB"] = preference.time_b;
         row["timeC"] = preference.time_c;
-      }
-      else {
+      } else {
         row["comment"] = "&nbsp;";
         row["timeB"] = "&nbsp;";
         row["timeC"] = "&nbsp;";
       }
-    }
-    else {
+    } else {
       row["projectID"] = "&nbsp;";
-      const preference = await getNoSurveyTimeForWrite(
-        assignment.student_id
-      );
+      const preference = await getNoSurveyTimeForWrite(assignment.student_id);
       if (preference.length !== 0) {
         row["comment"] = "&nbsp;";
         row["timeA"] = preference[0].time_a;

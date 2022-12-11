@@ -1,20 +1,23 @@
 const mySQL = require("mysql2");
 const SQL = require("sql-template-strings");
+require("dotenv").config();
 
 // Edit with your MySQL Password:
-const mySQLPassword = "password";
-
+const mySQLPassword = process.env.PASSWORD;
+const databaseName = process.env.DATABASE_NAME;
+const userName = process.env.USER_NAME;
+console.log(databaseName);
+console.log(userName);
 // MySQL connection objects.
 const mySQLConnection = mySQL.createConnection({
   host: "localhost",
-  user: "mav5499",
+  user: userName,
   password: mySQLPassword,
 });
 
-const databaseName = "capstone";
 const databaseConnection = mySQL.createConnection({
   host: "localhost",
-  user: "mav5499",
+  user: userName,
   password: mySQLPassword,
   database: databaseName,
 });

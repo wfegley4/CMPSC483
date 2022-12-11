@@ -170,7 +170,6 @@ app.get("/api/student-preferences/:id", async (req, res) => {
 });
 
 app.put("/api/write", async (req, res) => {
-  console.log("hello");
   writeCSV.writeAssignmentsCSV(() => {
     res.status(200).json("OK");
   });
