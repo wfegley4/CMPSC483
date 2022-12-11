@@ -4,7 +4,6 @@ Welcome to the github containing the files for our capstone project!
 ## Dependencies Setup
 To run this project, you will need to install the following: nodeJS and mySQL. 
 
-
 1. Download NodeJS https://nodejs.org/en/
 <img width="837" alt="image" src="https://user-images.githubusercontent.com/77926643/194165977-77d5784f-f89a-4eee-be32-ab7f65c0429a.png">
 
@@ -28,9 +27,10 @@ If you're on MacOS, you can download the mySQL workbench from https://dev.mysql.
 - studentsFinal.csv
 
 4. In the backend folder, create a .env file with the following content. These environment variables will be used to configure your mySQL database.
-`USERNAME=your MySQL Username` 
+`USER_NAME=your MySQL Username` 
 `PASSWORD= your database password`
 `DATABASE_NAME= capstone`
+![image](https://user-images.githubusercontent.com/74104735/206932011-4e141711-b11f-41bd-be42-d74df11a852b.png)
 
 5. (Terminal) Navigate to /backend folder and run `node builddb.js` 
 - This command only needs to be run when the database needs to be build or rebuilt. 
@@ -47,9 +47,11 @@ If you're on MacOS, you can download the mySQL workbench from https://dev.mysql.
 
 4.  run the program by `npm start`
 
-###Summary
+### Summary
 You should have two terminals open. One with `node server.js` and `npm start`
 
+## Other Usage Details
+Whether you're a dev or a user, reference the "Documantation" PDF located in the home directory for more usage and organization information.
 
 ## Future Work and Development
 Hi there! If you're reading this as a future (as of Fall 2022) capstone student looking to improve upon our project, here are some areas to build of. It will also make more sense as you understand the project. 
