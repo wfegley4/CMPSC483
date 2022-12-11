@@ -22,7 +22,7 @@ const { exit } = require("process");
 
 const preferencesCSV = "studentsFinal.csv";
 const projectsCSV = "projectsFinal.csv";
-const studentsCSV = "tempStudentAssignments.csv";
+const studentsCSV = "studentAssignments.csv";
 const studentsNoSurveyCSV = "Students Without Prefs.csv";
 
 const majors = [
