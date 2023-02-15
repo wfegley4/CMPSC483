@@ -1,0 +1,6 @@
+build/*
+!build/CMakeLists.txt
+output/*
+!output/.gitkeep
+tools
+example.db
