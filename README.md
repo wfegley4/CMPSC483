@@ -26,8 +26,11 @@ or
 stitch run dev
 ```
 
-C# urrent progress:
+# Current progress:
 
 
-https://user-images.githubusercontent.com/105571100/219013251-ba33b890-52d7-46e8-90b3-ff3b6493ea7e.mp4
+
+https://user-images.githubusercontent.com/105571100/219078772-ea8e22bd-1b50-463e-90a2-c7f48c5013f3.mp4
+
+
 
