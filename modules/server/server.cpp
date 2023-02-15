@@ -1,11 +1,8 @@
 #include "server.h"
 
-#include <utility>
-
-
 // adds a page with contents located in directory_path at address/mount_point
 Server *Server::page(const std::string &mount_point, const std::string &directory_path) {
-    auto ret = m_server.set_mount_point("/", directory_path);
+    auto ret = m_server.set_mount_point(mount_point, directory_path);
     ASSERT(ret, INFO("MOUNTED \"%s\" : \"%s\"", mount_point.c_str(), directory_path.c_str()), FATAL("FAILED TO MOUNT %s", directory_path.c_str()));
     return this;
 }

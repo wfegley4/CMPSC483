@@ -1,9 +1,8 @@
 #pragma once
-
 #define REQ_RES [&](const auto& req, auto& res)
 
-#include "pch.h"
-#include "logger.h"
+#include "database.h"
+
 
 
 struct Server{

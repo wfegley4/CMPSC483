@@ -11,94 +11,79 @@
     <title>Test</title>
 </head>
 <body>
-    <div class="content">
+<div class="content">
 
 
-        <div class="sidebar">
+    <div class="sidebar">
 
-            <div class="sidebar-menu">
+        <div class="sidebar-menu">
 
-                <div class ="sidebar-element active">
-                    <div class = "sidebar-element-icon">
-
-                    </div>
-                    <div class = "sidebar-element-text">
-                        Home
-                    </div>
-                </div>
-                <div class ="sidebar-element">
-                    <div class = "sidebar-element-icon">
-
-                    </div>
-                    <div class = "sidebar-element-text">
-                        Students
-                    </div>
-                </div>
-                <div class ="sidebar-element">
-                    <div class = "sidebar-element-icon">
-
-                    </div>
-                    <div class = "sidebar-element-text">
-                        Teams
-                    </div>
-                </div>
-                <div class ="sidebar-element">
-                    <div class = "sidebar-element-icon">
-
-                    </div>
-                    <div class = "sidebar-element-text">
-                        Export
-                    </div>
-                </div>
-
+            <!--            Home-->
+            <div class="sidebar-element active" id="sidebar-home-element" onclick="setActiveSidebarElement(this)">
+                <div class="sidebar-element-icon"></div>
+                <div class="sidebar-element-text">Home</div>
             </div>
 
-        </div>
+            <!--            Assignment-->
+            <div class="sidebar-element" id="sidebar-assignment-element" onclick="setActiveSidebarElement(this)">
+                <div class="sidebar-element-icon"> </div>
+                <div class="sidebar-element-text">Assignments</div>
+            </div>
 
-
-        <div class="main">
-
-            <div class="main-cards">
-
-                <div class="card">
-                    <div class = "card-header">
-                        <h1>Completed Teams</h1>
-                        progress
-                        <button onclick="grow(5)">add5</button>
-                        <button onclick="shrink(5)">sub5</button>
-
-                        <button onclick="testRequest(5)">testRequest5</button>
-                    </div>
-
-                    <div class="circle" id="completed-teams-circle">
-                        <div class="inner"></div>
-                    </div>
-
-                </div>
-
-                <div class="card">
-                    <div class = "card-header">
-                        <h1>Assigned Students</h1>
-                        progress
-                    </div>
-
-                    <div class="circle" id="assigned-students-circle">
-                        <div class="inner"></div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class = "card-header">
-                        <h1>Student Major Distribution</h1>
-                    </div>
-                </div>
-
+            <!--            Export-->
+            <div class="sidebar-element" id="sidebar-export-element" onclick="setActiveSidebarElement(this)">
+                <div class="sidebar-element-icon"></div>
+                <div class="sidebar-element-text">Export</div>
             </div>
 
         </div>
 
     </div>
 
-    <script src="main.js"></script>
+
+    <div class="main" id="main">
+
+        <div class="main-cards">
+
+            <div class="card">
+                <div class="card-header">
+                    <h1>Completed Teams</h1>
+                    progress
+                    <button onclick="grow(5)">add5</button>
+                    <button onclick="shrink(5)">sub5</button>
+
+                    <button onclick="testRequest(5)">testRequest5</button>
+                </div>
+
+                <div class="circle" id="completed-teams-circle">
+                    <div class="inner"></div>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h1>Assigned Students</h1>
+                    progress
+                </div>
+
+                <div class="circle" id="assigned-students-circle">
+                    <div class="inner"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h1>Student Major Distribution</h1>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="main.js"></script>
 </body>
 </html>
