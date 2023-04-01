@@ -26,6 +26,16 @@ or
 stitch run dev
 ```
 
+# Mac Instructions
+Requirement: Homebrew package manager
+
+https://brew.sh/
+
+```
+brew install cmake llvm ninja
+./build.sh
+```
+
 # Current progress:
 
 
